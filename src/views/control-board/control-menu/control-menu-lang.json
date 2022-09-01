@@ -1,0 +1,20 @@
+{
+    "en": {
+        "t1": "DbInfo",
+        "t2": "UserManage",
+        "t3": "ServerStatus",
+        "t4": "RunningTask",
+        "t5": "AuditLog",
+        "t6": "RoleManage",
+        "t7": "Authority"
+    },
+    "zh": {
+        "t1": "数据库信息",
+        "t2": "账户管理",
+        "t3": "实时状态",
+        "t4": "任务管理",
+        "t5": "审计日志",
+        "t6": "角色管理",
+        "t7": "权限管理"
+    }
+}

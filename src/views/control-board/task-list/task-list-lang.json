@@ -1,0 +1,18 @@
+{
+    "en":{
+        "t1": "Task in progress",
+        "t2": "Task ID",
+        "t3": "Execution time",
+        "t4": "Task description",
+        "t5": "Action",
+        "t6": "End task"
+    },
+    "zh":{
+        "t1": "执行中任务",
+        "t2": "任务ID",
+        "t3": "执行时间",
+        "t4": "任务描述",
+        "t5": "操作",
+        "t6": "结束任务"
+    }
+}

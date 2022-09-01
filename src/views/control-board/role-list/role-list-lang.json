@@ -1,0 +1,42 @@
+{
+    "en": {
+        "t1": "Role Management",
+        "t2": "Add Role",
+        "t3": "Description",
+        "t4": "Name",
+        "t5": "Graph permissions",
+        "t6": "Action",
+        "t7": "All Graph",
+        "t8": "Cannot be modified",
+        "t9": "Modify graph permissions",
+        "t10": "GraphName",
+        "t11": "Permissons",
+        "t12": "OK",
+        "t13": "Cancel",
+        "t14": "Add/remove Graph permissions",
+        "t15": "Please select graph permissions",
+        "t16": "Delete",
+        "t17": "Role Name",
+        "t18": "Role Description"
+    },
+    "zh": {
+        "t1": "角色管理",
+        "t2": "添加角色",
+        "t3": "角色描述",
+        "t4": "角色名称",
+        "t5": "图权限",
+        "t6": "操作",
+        "t7": "所有的图",
+        "t8": "不可修改",
+        "t9": "修改图权限",
+        "t10": "图名称",
+        "t11": "权限",
+        "t12": "确定",
+        "t13": "取消",
+        "t14": "添加/删除图权限",
+        "t15": "请选择图权限",
+        "t16": "删除",
+        "t17": "角色名称",
+        "t18": "角色描述"
+    }
+}

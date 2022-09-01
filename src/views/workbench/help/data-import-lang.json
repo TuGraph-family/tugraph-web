@@ -1,0 +1,24 @@
+{
+    "en":{
+        "t1":"Load Data",
+        "t2":"On the Load Data page, we can upload the csv file to import the data online, click select file to select the csv file from the computer, and then we need to map the data first, first select the corresponding model (select movie), click the map data, the table above It is the attribute, data type, and whether to fill in the data model. The following table is the first ten rows of data in the csv file. We need to match the data with the model.",
+        "t3":"Click the id column of the data, and then click the id column of the model, the matching will be successful, and then continue to match, the data that is not connected will not be uploaded. If the csv file has a header, you also need to select skip rows, and the skipped rows will not be imported. Here we choose to skip two lines. After mapping data, click OK, we can see that the mapping status becomes the completed status. Click Import, the data is imported successfully.",
+        "t4":"Next, we map the person data, select the person model, click Map data, and the connection matches. If the connection is wrong, you can select this line, click delete the line, reconnect, click Import, and the import is successful.",
+        "t5":"Next, we map the data of the side. For the data of the side, we need to choose the mount of the starting point and the mount of the end. For the mount of the starting point, we choose the id of the person. After the selection, the table will be generated correspondingly, and the mount of the end should be the id of the movie. Then connect to the data, click OK, click Import, the data is imported successfully.",
+        "t6":"Test loaded data file",
+        "t7":"Vertex data",
+        "t8":"Edge data",
+        "t9":"Data Sources"
+    },
+    "zh":{
+        "t1":"导入",
+        "t2":"在导入页面，我们可以上传csv文件在线导入数据，点击选择文件从电脑中选择csv 文件，之后我们先要进行映射数据的操作，首先选择对应的模型（选择movie），点击映射数据，上面的表格是数据模型的属性、数据类型、是否选填，下面的表格是 csv文件的前十行数据，我们需要把数据和模型进行连线匹配。",
+        "t3":"点击数据的id列，再点击模型的id列，就可以匹配成功，接下来继续匹配，没有连 线的数据不会被上传。如果csv文件有表头，还需要选择跳过行，，跳过的行的数据不会被导入。这里我们选择跳过两行。映射数据完毕点击确定，我们可以看到映射状 态变成完成的状态。点击导入，导入数据成功。",
+        "t4":"接下来我们映射person的数据，选择person的模型，点击映射数据，连线匹配，如 果连线错误，可以选中这条线，点击删除线，重新连接，点击导入，导入成功。",
+        "t5":"接下来我们映射边的数据，边的数据需要选择起点的挂载和终点的挂载，起点的挂 载我们选择person的id，选择完之后表格会对应生成，终点的挂载选择movie的id，之后连接数据，点击确定，点击导入，导入数据成功。",
+        "t6":"测试导入数据文件",
+        "t7":"顶点的数据",
+        "t8":"边数据",
+        "t9":"边数据"
+    }
+}

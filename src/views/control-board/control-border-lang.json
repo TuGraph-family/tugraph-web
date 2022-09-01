@@ -1,0 +1,12 @@
+{
+    "en":{
+        "text1": "changePass",
+        "text2": "Sign out",
+        "text3": "Index"
+    },
+    "zh":{
+        "text1": "修改密码",
+        "text2": "退出登录",
+        "text3": "主页"
+    }
+}

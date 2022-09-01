@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 61.2 (89653) - https://sketch.com -->
+    <title>05修改密码</title>
+    <desc>Created with Sketch.</desc>
+    <g id="05修改密码" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-6">
+            <rect id="Rectangle" x="0" y="0" width="20" height="20"></rect>
+            <line x1="10" y1="10" x2="16" y2="4" id="Line-2" stroke="#3E8CF6" stroke-width="2" stroke-linecap="round"></line>
+            <path d="M16,8.04607505 L16,8.04607505 L16,14.4 C16,15.2836556 15.2836556,16 14.4,16 L5.6,16 C4.7163444,16 4,15.2836556 4,14.4 L4,5.6 C4,4.7163444 4.7163444,4 5.6,4 L11.2673319,4 L11.2673319,4" id="Path" stroke="#3E8CF6" stroke-width="2"></path>
+        </g>
+    </g>
+</svg>

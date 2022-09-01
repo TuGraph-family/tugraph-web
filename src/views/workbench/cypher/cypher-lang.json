@@ -1,0 +1,32 @@
+{
+    "en": {
+        "text1": "Export as PNG",
+        "text2": "Export as JSON",
+        "text3": "No query yet",
+        "text4": "Export as CSV",
+        "text5": "Grid Layout",
+        "text6": "Circle Layout",
+        "text7": "Tree Layout",
+        "text8": "Force Layout",
+        "contextmenu": {
+            "text1": "Close current page",
+            "text2": "Close other pages",
+            "text3": "Close all pages"
+        }
+    },
+    "zh": {
+        "text1": "导出png图片",
+        "text2": "导出json文件",
+        "text3": "还没有任何查询",
+        "text4": "导出csv文件",
+        "text5": "网格布局",
+        "text6": "环形布局",
+        "text7": "树形布局",
+        "text8": "力导布局",
+        "contextmenu": {
+            "text1": "关闭当前页",
+            "text2": "关闭其他页",
+            "text3": "关闭所有页"
+        }
+    }
+}

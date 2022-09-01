@@ -1,0 +1,18 @@
+{
+    "en":{
+        "text1": "Graph Processing",
+        "text2": "At 100X Speed",
+        "text3": "Sign in",
+        "text4": "User Name",
+        "text5": "Password",
+        "text6": "Sign in"
+    },
+    "zh":{
+        "text1": "快如闪电的百倍性能表现",
+        "text2": "下一代AI本源",
+        "text3": "请登录",
+        "text4": "用户名",
+        "text5": "密码",
+        "text6": "登录"
+    }
+}

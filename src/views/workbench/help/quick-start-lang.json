@@ -1,0 +1,36 @@
+{
+    "en":{
+        "t1":"TuGraph Quick Start",
+        "t2":"The use of TuGraph is generally divided into three steps, including creating models, importing data, and manipulating data.Let's take yago's data as an example to help you get started quickly.",
+        "t3":"Step 1: Design Schema",
+        "t4":"You can click the \"Design Sechma\" menu on the left menu, and then refer to the modeling guide to complete the creation; you can also create it by writing Cypher statements. If you are using TuGraph for the first time, you can click the button below to complete graph data modeling with one click.",
+        "t5":"Design Schema with one click",
+        "t6":"Step 2: Load Data",
+        "t7":"You can click the \"Load Data\" menu on the left menu and refer to the guide to complete the data import; you can write data to the database by writing Cypher statements. If you are using TuGraph for the first time, you can click the button below to complete the import of graph data with one click.",
+        "t8":"Load data with one click",
+        "t9":"Step 3: Write Queries",
+        "t10":"You can click \"Write Queries\" on the left menu, refer to the guidance in the query to familiarize yourself with the Cypher query process, and freely manipulate the query results on the interactive interface.",
+        "t11":"Step 4: Create Plugin",
+        "t12":"You can click the \"Plugin\" menu on the left and refer to the guide to complete the Plugin creation. If you are using tugraph for the first time, you can click the button below to create the plug-in with one click.",
+        "t13":"Create Plugin with one click",
+        "t14":"Congratulations, you have completed the quick start of TuGraph. If you have any new questions in the future, please read the help file or contact us via email: tugraph@service.alipay.com. I wish you a happy use!",
+        "t15":"Data Sources:"
+    },
+    "zh":{
+        "t1":"TuGraph 快速上手指南",
+        "t2":"TuGraph的的使用一般分为三步，包括创建模型、导入数据、操作数据。我们以yago的数据 1为例，带您快速上手",
+        "t3":"第一步：创建模型",
+        "t4":"您可以点击左侧菜单的\"建模\"菜单，然后参考建模导引完成创建；也可以通过，编写Cypher语句进行创建。 如果您是第一次使用TuGraph，您可以点击下方按钮，一键完成图数据的建模。",
+        "t5":"一键创建模型",
+        "t6":"第二步：写入数据",
+        "t7":"您可以点击左侧菜单的\"导入\"菜单，参考导引完成数据导入；您可以通过编写Cypher语句向数据库中写数据。 如果您是第一次使用TuGraph，您可以点击下方按钮，一键完成图数据的导入。",
+        "t8":"一键创建数据",
+        "t9":"第三步：查询数据",
+        "t10":"您可以点击左侧菜单的\"查询\"，参考查询中的导引熟悉Cypher查询过程，在交互式界面对查询结果自由操作。",
+        "t11":"第四步：创建插件",
+        "t12":"您可以点击左侧菜单的\"插件\"菜单，参考导引完成插件的创建。 如果您是第一次使用TuGraph，您可以点击下方按钮，一键完成插件的创建。",
+        "t13":"一键安装插件",
+        "t14":"恭喜您已经完成了TuGraph的快速上手。以后使用过程中如果有新的疑问，请阅读帮助文档或通过邮箱联系我们：tugraph@service.alipay.com。 祝您使用愉快！",
+        "t15":"数据来源:"
+    }
+}

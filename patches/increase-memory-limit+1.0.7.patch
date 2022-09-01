@@ -1,0 +1,13 @@
+diff --git a/node_modules/increase-memory-limit/index.js b/node_modules/increase-memory-limit/index.js
+index 362a8cc..ebc8556 100755
+--- a/node_modules/increase-memory-limit/index.js
++++ b/node_modules/increase-memory-limit/index.js
+@@ -32,7 +32,7 @@ glob(path.join(cwd, "node_modules", ".bin", "*"), function (err, files) {
+       if (line.startsWith("if [") || line.startsWith("@IF") || line.indexOf ('has_node') !== -1) {
+         patchedContents += line + "\n";
+       } else {
+-        patchedContents += line.replace(/node(\.exe)?\b(?: \-\-max\-old\-space\-size\=[0-9]+)?/, `node$1 --max-old-space-size=${maxOldSpaceSize}`) + "\n";
++        patchedContents += line.replace(/(\s)node(\.exe)?\b(?: \-\-max\-old\-space\-size\=[0-9]+)?/, ` node$1--max-old-space-size=${maxOldSpaceSize}`) + "\n";
+       }
+     }
+ 

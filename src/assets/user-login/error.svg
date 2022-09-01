@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>报错</title>
+    <desc>Created with Sketch.</desc>
+    <g id="报错" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-2">
+            <rect id="Rectangle" x="0" y="0" width="20" height="20"></rect>
+            <path d="M8.88203481,3.02402594 C9.82919534,2.45572963 11.0577159,2.76285975 11.6260122,3.71002029 L11.6260122,3.71002029 L17.1826051,12.9710085 C17.3691036,13.2818393 17.4676192,13.6375121 17.4676192,14 C17.4676192,15.1045695 16.5721887,16 15.4676192,16 L15.4676192,16 L3.73703418,16 C3.34218421,16 2.95616883,15.8831239 2.62763379,15.6641006 C1.70857641,15.0513957 1.46022868,13.809657 2.07293359,12.8905996 L2.07293359,12.8905996 L8.24692573,3.6296114 C8.41118601,3.38322099 8.62811021,3.17638071 8.88203481,3.02402594 Z M11,13 L9,13 L9,15 L11,15 L11,13 Z M11,6 L9,6 L9,12 L11,12 L11,6 Z" id="Combined-Shape-Copy" fill="#FFCF6B"></path>
+        </g>
+    </g>
+</svg>

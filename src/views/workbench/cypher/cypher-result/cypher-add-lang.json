@@ -1,0 +1,46 @@
+{
+    "en": {
+        "message": {
+            "text1": "Label not selected",
+            "text2": "Required fields are empty",
+            "text3": "New Vertex successfully | New Vertex failed",
+            "text4": "The source and end distnation cannot be empty",
+            "text5": "New edge successfully | New edge failed",
+            "text6": "Modify vertex successfully | Modify vertex failed",
+            "text7": "Modify edge successfully | Modify edge failed",
+            "text8": "{0} will be permanently deleted, do you want to continue?",
+            "text9": "Vertex | Edge",
+            "text10": "Confirm | Cancel",
+            "text11": "Undeleted",
+            "text12": "Prompt"
+        },
+        "add": {
+            "t1": "Add Vertex",
+            "t2": "Add Edge",
+            "t3": "Add Vertex Successfully",
+            "t4": "Add Vertex failed"
+        }
+    },
+    "zh": {
+        "message": {
+            "text1": "未选择标签",
+            "text2": "必填项为空",
+            "text3": "创建点成功 | 创建点失败",
+            "text4": "起点和终点不能为空",
+            "text5": "创建边成功 | 创建边失败",
+            "text6": "修改点成功 | 修改点失败",
+            "text7": "修改边成功 | 修改边成功",
+            "text8": "{0}将永久删除, 是否继续?",
+            "text9": "点 | 边",
+            "text10": "确定 | 取消",
+            "text11": "已取消删除",
+            "text12": "提示"
+        },
+        "add": {
+            "t1": "添加节点",
+            "t2": "添加关系",
+            "t3": "添加节点成功",
+            "t4": "添加节点失败"
+        }
+    }
+}

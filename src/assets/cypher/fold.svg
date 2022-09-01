@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 61.2 (89653) - https://sketch.com -->
+    <title>10多边合并</title>
+    <desc>Created with Sketch.</desc>
+    <g id="10多边合并" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group" transform="translate(12.000000, 12.000000) rotate(90.000000) translate(-12.000000, -12.000000) ">
+            <rect id="Rectangle" x="0" y="0" width="24" height="24"></rect>
+            <rect id="Rectangle" fill="#B3B3B3" x="5" y="4" width="1" height="16"></rect>
+            <rect id="Rectangle-Copy" fill="#B3B3B3" x="7" y="4" width="1" height="16"></rect>
+            <rect id="Rectangle-Copy-2" fill="#B3B3B3" x="9" y="4" width="1" height="16"></rect>
+            <rect id="Rectangle-Copy-3" fill="#B3B3B3" x="19" y="4" width="1" height="16"></rect>
+            <line x1="11.5" y1="11.5" x2="17.5" y2="11.5" id="Path-7" stroke="#979797"></line>
+            <polyline id="Path-9" stroke="#B3B3B3" points="13.7203759 9 17.7203759 11.5282694 13.7203759 14.2769761"></polyline>
+        </g>
+    </g>
+</svg>

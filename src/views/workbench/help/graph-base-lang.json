@@ -1,0 +1,38 @@
+{
+    "en":{
+        "t1":"TuGraph uses an attribute graph model. The graph model is the modeling of things and their relationships, and consists of vertices/nodes, edges/relationships and their properties. Let's take the picture of yago as an example.",
+        "t2":"As shown in the figure above, the yago data contains a total of 5 types of vertices and 8 types of edges, which together describe the basic relationship between the movie and the actors, and the user's rating of the movie.",
+        "t3":"movie vertex. Indicates a specific movie, such as \"Forrest Gump\"。",
+        "t4":"person vertex. Represents an individual, for the film may be an actor, director, or screenwriter.",
+        "t5":"genre vertex. Indicates the type of movie, such as drama, horror.",
+        "t6":"keyword vertex. Indicates some keywords related to the movie, such as \"save the world\", \"virtual reality\", and \"subway\".",
+        "t7":"user vertex. Indicates the user watching the movie.",
+        "t8":"The produce edge connects person and movie. Indicates the relationship of the producer of the film.",
+        "t9":"The acted_in edge connects person and movie. Indicates which movies the actor starred in.",
+        "t10":"The direct edge connects person and movie. Indicates who the director of the film is.",
+        "t11":"The write edge connects person and movie. Indicates the screenwriter relationship of the film.",
+        "t12":"The has_genre edge connects movie and genre. Indicates the type classification of the movie.",
+        "t13":"The has_keyword edge connects movie and keyword. Some keywords that represent the video, that is, more detailed tags.",
+        "t14":"The rate edge connects user and movie. Indicates the user's rating of the movie.",
+        "t15":"The is_friend edge connects user and user. Indicates the friend relationship between the user and the user.",
+        "t16":"Graph basis"
+    },
+    "zh":{
+        "t1":"TuGraph采用属性图模型。图模型是对事物及其关联关系的建模，由顶点（vertices/nodes）、边（edges/relationships）及其属性（property）组成。我们以yago的图为例进行介绍。",
+        "t2":"如上图所示，yago数据共包含5种顶点，8种边，共同描述电影和演员的基本关系，以及用户对电影的评分。",
+        "t3":"movie 顶点。表示某一部具体的影片，比如\"阿甘正传\"。",
+        "t4":"person 顶点。表示个人，对影片来说可能是演员、导演，或编剧。",
+        "t5":"genre 顶点。表示影片的类型，比如剧情片、恐怖片。",
+        "t6":"keyword 顶点。表示与影片相关的一些关键字，比如“拯救世界”、“虚拟现实”、“地铁”。",
+        "t7":"user 顶点。表示观影的用户。",
+        "t8":"produce 边，连接person和movie。表示影片的出品人关系。",
+        "t9":"acted_in 边，连接person和movie。表示演员出演了哪些影片。",
+        "t10":"direct 边，连接person和movie。表示影片的导演是谁。",
+        "t11":"write 边，连接person和movie。表示影片的编剧关系。",
+        "t12":"has_genre 边，连接movie和genre。表示影片的类型分类。",
+        "t13":"has_keyword 边，连接movie和keyword。表示影片的一些关键字，即更细分类的标签。",
+        "t14":"rate 边，连接user和movie。表示用户对影片的打分。",
+        "t15":"is_friend 边，连接user和user。表示用户和用户的好友关系。",
+        "t16":"图基础"
+    }
+}

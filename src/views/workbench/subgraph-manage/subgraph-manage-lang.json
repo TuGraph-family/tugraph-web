@@ -1,0 +1,52 @@
+{
+    "en": {
+        "text1": "Subgraph",
+        "text2": "New Graph",
+        "text3": "Management",
+        "text4": "Name",
+        "text5": "Config",
+        "text6": "Select",
+        "text7": "Create",
+        "text8": "Cancel",
+        "text9": "Subgraph Description",
+        "text10": "New Scene",
+        "confirm": {
+            "text1": "Prompt",
+            "text2": "Subgraph \"{0}\" will be permanently deleted, continue?",
+            "text3": "Confirm",
+            "text4": "Cancel"
+        },
+        "message": {
+            "text1": "Successfully deleted",
+            "text2": "Undeleted",
+            "text3": "The subgraph name cannot be empty",
+            "text4": "Created successfully",
+            "text5": "Creation failed! {0}"
+        }
+    },
+    "zh": {
+        "text1": "选择子图",
+        "text2": "新建子图",
+        "text3": "管理子图",
+        "text4": "子图名称",
+        "text5": "配置",
+        "text6": "请选择",
+        "text7": "创建",
+        "text8": "取消",
+        "text9": "子图描述",
+        "text10": "新建示例",
+        "confirm": {
+            "text1": "提示",
+            "text2": "子图 \"{0}\" 将永久删除, 是否继续?",
+            "text3": "确认",
+            "text4": "取消"
+        },
+        "message": {
+            "text1": "删除成功",
+            "text2": "已取消删除",
+            "text3": "子图名称不能为空",
+            "text4": "创建成功",
+            "text5": "创建失败! {0}"
+        }
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "en":{
+        "text1":"GraphName",
+        "text2":"Cypher Query",
+        "text3":"Create Lable",
+        "text4":"Load Data",
+        "text5":"Plugin",
+        "text6":"Help"
+    },
+    "zh":{
+        "text1":"当前图名",
+        "text2":"查 询",
+        "text3":"建 模",
+        "text4":"导 入",
+        "text5":"插 件",
+        "text6":"帮 助"
+    }
+}

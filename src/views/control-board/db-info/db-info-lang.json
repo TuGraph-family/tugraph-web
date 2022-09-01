@@ -1,0 +1,38 @@
+{
+    "en": {
+        "t1": "System Info",
+        "t2": "Basic information",
+        "t3": "Server version number",
+        "t4": "Operation hours",
+        "t5": "Server code branch",
+        "t6": "Server code version",
+        "t7": "Database configuration information",
+        "t8": "Highly available list",
+        "t9": "SubGraph List",
+        "t10": "Vertex",
+        "t11": "Edge",
+        "t12": "Count",
+        "t13": "Web code branch",
+        "t14": "CPP version number",
+        "t15": "Python version number",
+        "t16": "Cpp ID"
+    },
+    "zh": {
+        "t1": "数据库信息",
+        "t2": "基础信息",
+        "t3": "服务器版本号",
+        "t4": "运行时间",
+        "t5": "服务器代码分支",
+        "t6": "服务器代码版本",
+        "t7": "数据库配置信息",
+        "t8": "高可用列表",
+        "t9": "子图列表",
+        "t10": "节点",
+        "t11": "关系",
+        "t12": "统计",
+        "t13": "前端代码版本号",
+        "t14": "CPP编译器版本号",
+        "t15": "Python版本号",
+        "t16": "CPP编译器ID"
+    }
+}

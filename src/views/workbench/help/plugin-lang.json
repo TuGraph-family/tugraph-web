@@ -1,0 +1,18 @@
+{
+    "en":{
+       "t1":"Plugin",
+       "t2":"On the Load Stored Processes page, users can import the written stored procedures, execute them online, and view the execution results." ,
+       "t3":"Let's add a Stored Process, click Add Store Process, fill in the name, select the type, CPP or Python, fill in the description, choose whether to read-only, import the file, click Create, after the creation is successful, click this Store Process, we can see His name, description, read-only.",
+       "t4":"At the top of the list, we can enter the parameters, the timeout length, select the calling method, click execute, and you can see the execution result below. Click Uninstall to uninstall this Store Process",
+       "t5":"At the top of the list, you can enter the name of the Store Process to find it.",
+       "t6":"One click Import plugin download"
+    },
+    "zh":{
+       "t1":"插件",
+       "t2":"在插件页面，用户可以导入编写好的存储过程，在线执行并查看执行结果。" ,
+       "t3":"我们来添加一个插件，点击添加插件，填写插件名称，选择插件类型，CPP或者Python，填写插件描述，选择是否只读，导入插件文件，点击创建，创建成功之后，点击这个插件，我们可以看到他的名称、描述、是否只读。",
+       "t4":"在列表上边我们可以输入参数，超时长度，选择调用方式，点击执行，下面可以看到执行的结果。 点击卸载可以卸载掉这个插件。",
+       "t5":"在列表上方可以输入插件的名称，查找对应的插件。",
+       "t6":"一键导入的插件下载"
+    }
+}

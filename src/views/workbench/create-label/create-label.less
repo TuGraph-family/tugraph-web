@@ -1,0 +1,400 @@
+.workbench-create-label {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    .workbench-create-label-loading {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+    }
+    .workbench-create-label-header {
+        position: absolute;
+        right: 10px;
+        top: 5px;
+        z-index: 8;
+        display: flex;
+        .el-input {
+            margin-left: 11px;
+        }
+    }
+    .workbench-create-label-body {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        position: relative;
+        background-color: #e6eaf2;
+        .label-list {
+            width: 350px;
+            height: 100%;
+            background-color: #fff;
+            z-index: 1;
+            border-right: 1px solid rgba(0, 0, 0, 0.1);
+            overflow: auto;
+            padding: 0 10px;
+            /deep/.el-tabs {
+                height: calc(100% - 20px);
+                border-radius: 8px 8px;
+                overflow: hidden;
+                .label-container {
+                    display: flex;
+                    flex-wrap: wrap;
+                    width: 100%;
+                }
+                .el-tag {
+                    margin-right: 8px;
+                    margin-bottom: 5px;
+                    flex-grow: 1;
+                    text-align: center;
+                    cursor: pointer;
+                }
+                .el-tabs__content {
+                    width: 100%;
+                    height: calc(100% - 30px);
+                    overflow-y: auto;
+                }
+            }
+        }
+        .label-canvas {
+            flex: 1;
+            margin: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            height: calc(100% - 20px);
+            width: calc(100% - 20px);
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            .label-canvas-top {
+                display: flex;
+                padding: 8px 10px;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                /deep/.el-upload {
+                    margin-left: 10px;
+                }
+                /deep/.el-button.add-vertex-label {
+                    &:hover {
+                        color: #3e8cf6;
+                        background-color: #ffffff;
+                    }
+                    &:focus {
+                        border-color: #dcdfe6;
+                        background-color: #ffffff;
+                        color: #606266;
+                    }
+                    &:active {
+                        border-color: #3e8cf6;
+                        color: #3e8cf6;
+                    }
+
+                    i {
+                        color: #3e8cf6;
+                        font-weight: 700;
+                    }
+                }
+                /deep/.el-button.add-edge-label {
+                    &:hover {
+                        color: #0d9e43;
+                        background-color: #ffffff;
+                    }
+                    &:focus {
+                        border-color: #dcdfe6;
+                        background-color: #ffffff;
+                        color: #606266;
+                    }
+                    &:active {
+                        border-color: #0d9e43;
+                        color: #0d9e43;
+                    }
+                    i {
+                        color: #0d9e43;
+                        font-weight: 700;
+                    }
+                }
+            }
+        }
+        .label-canvas-container {
+            position: relative;
+            width: 100%;
+            height: calc(100% - 45px);
+            overflow: hidden;
+            .label-detail {
+                width: 700px;
+                height: 100%;
+                position: absolute;
+                right: 0;
+                z-index: 2;
+                border-left: 1px solid rgba(0, 0, 0, 0.1);
+                padding: 10px;
+                border-radius: 8px 0 0 8px;
+                overflow: hidden;
+                background-color: #fff;
+                .workbench-create-label-name {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    height: 40px;
+                    background-color: #44527c;
+                    color: #fff;
+                    padding: 0 10px;
+                    border-radius: 5px 5px 0 0;
+                    overflow: hidden;
+                }
+            }
+        }
+
+        .workbench-create-label-title {
+            font-size: 16px;
+            font-weight: 700;
+            padding: 10px 0 0 10px;
+            display: flex;
+            /deep/.el-upload {
+                margin-left: 10px;
+            }
+        }
+        .workbench-create-label-vertex,
+        .workbench-create-label-edge {
+            width: 50%;
+            height: 100%;
+        }
+
+        /deep/.workbench-create-label-props {
+            height: calc(100% - 40px);
+            padding: 10px;
+            overflow: auto;
+
+            .el-table {
+                background: #f5f7fa;
+                .cell {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+                .headerRowClass {
+                    height: 28px;
+                }
+                .headerCellClass {
+                    background: #fff;
+                    padding: 1px 0;
+                    line-height: 28px;
+                    font-family: OpenSans;
+                    font-size: 12px;
+                    color: #666666;
+                }
+                .rowClass {
+                    height: 28px;
+                }
+
+                .cellClass {
+                    padding: 0;
+                    .el-button--mini {
+                        padding: 5px 10px;
+                    }
+                }
+                .el-table--enable-row-hover .el-table__body tr:hover > td {
+                    background-color: transparent !important;
+                }
+                input {
+                    height: 24px !important;
+                }
+                .el-input__inner {
+                    height: 24px;
+                    line-height: 24px;
+                    font-family: OpenSans;
+                    font-size: 14px;
+                    color: #44527c;
+                }
+                .el-input__icon {
+                    line-height: 24px;
+                }
+            }
+        }
+    }
+
+    .workbench-create-label-modal {
+        /deep/.elDialog {
+            width: 760px;
+            // height: 520px;
+            background: #ffffff;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            padding-bottom: 20px;
+            .el-dialog__headerbtn {
+                top: 24px;
+                right: 24px;
+                .el-dialog__close {
+                    color: #44527c;
+                }
+            }
+            .el-dialog__header {
+                margin: 20px 20px 0px 12px;
+                padding: 0 0 15px 0;
+                border-bottom: 1px solid #e6e6e6;
+            }
+            .el-dialog__title {
+                font-family: PingFangSC-Regular;
+                font-size: 20px;
+                color: #44527c;
+            }
+            .el-dialog__body {
+                padding: 14px 22px 0px 22px;
+            }
+            .el-form-item__label {
+                margin-bottom: 9px;
+                font-family: PingFangSC-Regular;
+                font-size: 12px;
+                color: #666666;
+                line-height: 12px;
+            }
+            .el-form-item {
+                margin-bottom: 28px;
+                .el-select {
+                    width: 100%;
+                }
+            }
+            .el-input__inner {
+                height: 28px;
+                line-height: 28px;
+                text-align: left;
+            }
+            .el-input__suffix {
+                right: -2px;
+            }
+
+            .elSelect2 {
+                width: 66px;
+            }
+            .labelImg,
+            .labelConstraints {
+                margin-bottom: 0px;
+                .el-form-item__content {
+                    line-height: 12px;
+                    img {
+                        float: right;
+                        margin-top: -4px;
+                    }
+                }
+            }
+            .edge-constraints-box {
+                width: 100%;
+                border: 1px solid #dcdfe6;
+                border-radius: 5px;
+                overflow: auto;
+            }
+            .addSpan {
+                font-family: PingFangSC-Regular;
+                font-size: 12px;
+                color: #3e8cf6;
+                float: right;
+                cursor: pointer;
+            }
+            .deleteButton {
+                width: 20px;
+                height: 20px;
+                cursor: pointer;
+                i {
+                    font-weight: 700;
+                    color: #d2d2d2;
+                    &:hover {
+                        color: #3e8cf6;
+                    }
+                }
+            }
+
+            .el-table {
+                background: #f5f7fa;
+                .cell {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+            .tableContainner,
+            .edge-constraints-box {
+                height: 100%;
+                background: #f5f7fa;
+                border: 1px solid #cccccc;
+                border-radius: 4px;
+                border-radius: 4px;
+                .headerRowClass {
+                    height: 28px;
+                }
+                .headerCellClass {
+                    background: #fff;
+                    padding: 1px 0;
+                    line-height: 28px;
+                    font-family: OpenSans;
+                    font-size: 12px;
+                    color: #666666;
+                }
+                .rowClass {
+                    height: 28px;
+                }
+
+                .cellClass {
+                    padding: 0;
+                    border: none;
+                }
+                .el-table--enable-row-hover .el-table__body tr:hover > td {
+                    background-color: transparent !important;
+                }
+                .el-input__inner {
+                    height: 24px;
+                    line-height: 24px;
+                    font-family: OpenSans;
+                    font-size: 14px;
+                    color: #44527c;
+                }
+                .el-input__icon {
+                    line-height: 24px;
+                }
+            }
+            .el-dialog__footer {
+                padding: 5px 24px;
+            }
+            .dialog-footer {
+                display: flex;
+                justify-content: flex-end;
+                .createLabel {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
+                    margin-right: 8px;
+                    width: 80px;
+                    height: 28px;
+                    font-family: PingFangSC-Regular;
+                    font-size: 14px;
+                    color: #ffffff;
+                    background: #3e8cf6;
+                    border-radius: 4px;
+                }
+                .createLabel:hover {
+                    background: #70acff;
+                }
+                .createLabel:active {
+                    background: #2774de;
+                }
+                .cancelLabel {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
+                    width: 80px;
+                    height: 28px;
+                    font-family: PingFangSC-Regular;
+                    font-size: 14px;
+                    color: #44527c;
+                    border: 1px solid #cccccc;
+                    border-radius: 4px;
+                    border-radius: 4px;
+                }
+                .cancelLabel:hover {
+                    border: 1px solid #3e8cf6;
+                }
+                .cancelLabel:active {
+                    background: #f0f0f0;
+                }
+            }
+        }
+    }
+}
