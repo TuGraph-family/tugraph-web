@@ -13,6 +13,7 @@ import CyConfig from './cy-config'
 import dblclick from 'cytoscape-dblclick'
 import cytoscape from 'cytoscape'
 import euler from 'cytoscape-euler'
+import cola from 'cytoscape-cola'
 cytoscape.use(euler)
 @Component
 export default class WorkbenchLabelGraph extends Vue {
@@ -44,6 +45,7 @@ export default class WorkbenchLabelGraph extends Vue {
     _cyDom: any = null
     zoomLevel: number = 0.8
     graphData: any[] = []
+    currentLabel: { nodes: any[]; edges: any[] } = { nodes: [], edges: [] }
     forceOption: any = {
         name: 'euler',
         springLength: 340,
@@ -64,20 +66,21 @@ export default class WorkbenchLabelGraph extends Vue {
         return this.subGraphManageStore.selectedSubGraph
     }
     get allLabels() {
-        let nodes = this.createLabelStore.allLabel.filter((item) => item.type === 'node')
-        let edges = this.createLabelStore.allLabel.filter((item) => item.type === 'edge')
-        return {
-            nodes,
-            edges
-        }
+        let allLabels = this.createLabelStore.allLabel
+        return allLabels
     }
     @Watch('activeLabel')
     onChangeActiveLabel() {
         this.setActive()
     }
     @Watch('allLabels', { immediate: true, deep: true })
-    onChangeAllLabels() {
-        if (this.allLabels.nodes.length) {
+    onChangeAllLabels(o, n) {
+        let target = this.allLabels.find((item) => item.graph == this.currentSelectedGraph)
+        let nodes = target ? target.allLabel.filter((item) => item.type === 'node') : []
+        let edges = target ? target.allLabel.filter((item) => item.type === 'edge') : []
+        this.currentLabel.nodes = nodes
+        this.currentLabel.edges = edges
+        if (nodes.length) {
             this.updateCanvas()
         } else if (this._cy) {
             this._cy.destroy()
@@ -223,7 +226,7 @@ export default class WorkbenchLabelGraph extends Vue {
         let nodeLabelNames = []
         let nodes: any[] = []
         let edges: any[] = []
-        this.allLabels.nodes.forEach((label, index) => {
+        this.currentLabel.nodes.forEach((label, index) => {
             let data: { [name: string]: any } = {}
             data.id = label.name
             data.color = this.nodesColor[index % this.nodesColor.length][0]
@@ -241,7 +244,7 @@ export default class WorkbenchLabelGraph extends Vue {
                 noConstraints.push([nodeLabelNames[n], nodeLabelNames[m], 'noConstraint'])
             }
         }
-        this.allLabels.edges.forEach((label, index) => {
+        this.currentLabel.edges.forEach((label, index) => {
             let constraints = []
             if (label.constraints.length > 0) {
                 constraints = label.constraints

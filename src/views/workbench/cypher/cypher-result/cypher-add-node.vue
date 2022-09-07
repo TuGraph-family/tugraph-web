@@ -48,8 +48,10 @@ export default class WorkbenchCypherAddNode extends Vue {
     @Prop(String) tabValue!: string
     targetNodeLabel: string = ''
     labelProps: Array<InputData> = []
+    @Prop(String) graphName!: string
     get nodeLabels() {
-        return this.createLabelStore.allLabel.filter((item) => item.type === 'node')
+        let target = this.createLabelStore.allLabel.find((item) => item.graph == this.graphName)
+        return target.allLabel.filter((item) => item.type === 'node')
     }
     checkOptional(data: any): boolean {
         let status = true
@@ -81,7 +83,7 @@ export default class WorkbenchCypherAddNode extends Vue {
         }
         let data = this.labelProps
         let result = await this.cypherStore.addNodeOrEdge({
-            graph: this.subGraphManageStore.selectedSubGraph,
+            graph: this.graphName,
             tabValue: this.tabValue,
             elementType: 'node',
             data: data,

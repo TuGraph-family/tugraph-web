@@ -11,7 +11,7 @@
                     <div class="sys-prop">
                         <div>
                             <span>{{ item.type === 'node' ? '点ID' : '边ID' }}：</span>
-                            {{ item.id || item.id }}
+                            {{ item.id }}
                         </div>
                     </div>
                 </template>
@@ -67,21 +67,23 @@ export default class WorkbenchCypherResultElementDetail extends Vue {
     selectedlabelName: string = ''
     edit: boolean = false
     @Prop(String) tabValue!: string
+    @Prop(String) graphName!: string
     propsList: any[] = []
     activeNames: any[] = [0]
     activeElementList: any[] = []
+
     get activeElement() {
-        let data, cypherReasultData, graphData
+        let data
         data = this.cypherStore.cypherReasultDatas.find((item) => item.id === this.tabValue)
-        data && (cypherReasultData = data.cypherReasultData)
-        cypherReasultData && (graphData = cypherReasultData.graphData)
-        return graphData.activeElement
+        return data.cypherReasultData.graphData.activeElement || []
     }
     get nodeLabels() {
-        return this.createLabelStore.allLabel.filter((item) => item.type === 'node')
+        let target = this.createLabelStore.allLabel.find((item) => item.graph == this.graphName)
+        return target.allLabel.filter((item) => item.type === 'node')
     }
     get edgeLabels() {
-        return this.createLabelStore.allLabel.filter((item) => item.type === 'edge')
+        let target = this.createLabelStore.allLabel.find((item) => item.graph == this.graphName)
+        return target.allLabel.filter((item) => item.type === 'edge')
     }
     @Watch('activeElement', { immediate: true, deep: true })
     onChangeActiveElement() {
@@ -118,7 +120,7 @@ export default class WorkbenchCypherResultElementDetail extends Vue {
                 properties,
                 label,
                 color: item.color,
-                id: item.sysPropties.vid || item.sysPropties.uid,
+                id: type === 'node' ? item.sysPropties.vid : item.sysPropties.uid,
                 propsList
             }
             this.activeElementList.push(obj)
@@ -218,7 +220,7 @@ export default class WorkbenchCypherResultElementDetail extends Vue {
 </script>
 <style lang="less" scoped>
 .workbench-cypher-result-element-detail {
-    width: 300px;
+    width: 100%;
     height: 100%;
     position: absolute;
     left: 0;

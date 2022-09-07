@@ -82,10 +82,12 @@ export default class QuickQueryNode extends Vue {
         return this.cypherStore.currentCypher
     }
     get nodeLabels() {
-        return this.createLabelStore.allLabel.filter((item) => item.type === 'node')
+        let target = this.createLabelStore.allLabel.find((item) => item.graph == this.currentSelectedGraph)
+        return target.allLabel.filter((item) => item.type === 'node')
     }
     get edgeLabels() {
-        return this.createLabelStore.allLabel.filter((item) => item.type === 'edge')
+        let target = this.createLabelStore.allLabel.find((item) => item.graph == this.currentSelectedGraph)
+        return target.allLabel.filter((item) => item.type === 'edge')
     }
     @Watch('selectNodeLabels')
     changeSelectNodeLabels() {

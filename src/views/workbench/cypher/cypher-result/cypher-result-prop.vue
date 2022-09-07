@@ -181,62 +181,6 @@ export default class WorkbenchCypherResultProp extends Vue {
             type: (this.targetLabel && this.targetLabel.type) || ''
         })
     }
-    changeFilterLabelProp(data: string) {
-        if (data) {
-            let target: any = this.filterList.find((item) => item.targetProp === data)
-            if (target) {
-                this.sign = target.sign
-                this.targetProp = target.targetProp
-                this.targetValue = target.targetValue
-                this.cypherStore.upDateShowByFilter({ tabValue: this.tabValue, ...target })
-            } else {
-                this.sign = ''
-                this.targetValue = ''
-            }
-            this.targetPropBak = data
-        }
-    }
-    clearTargetProp(data: any) {
-        let obj: any = { labelName: (this.graphData && this.graphData.activeLabel) || '', sign: '', targetProp: '', targetValue: '', type: this.targetLabel.type, clear: true }
-        this.cypherStore.upDateShowByFilter({
-            tabValue: this.tabValue,
-            ...obj
-        })
-        this.targetPropBak = ''
-        this.filterList
-    }
-    changeFilterSign() {
-        let target: any = this.filterList.find((item) => item.labelName === this.targetLabel.name)
-        if (target) {
-            target.sign = this.sign
-            this.cypherStore.upDateShowByFilter({ tabValue: this.tabValue, type: this.targetLabel.type, ...target })
-        }
-    }
-    changeExpression() {
-        let labelObj: any = this.createLabelStore.allLabel.find((item) => item.name === this.targetLabel.name)
-        let type = labelObj.props[this.targetProp].type
-        let obj: any
-        if (type === 'FLOAT') {
-            obj = { labelName: (this.graphData && this.graphData.activeLabel) || '', sign: this.sign, targetProp: this.targetProp, targetValue: parseFloat(this.targetValue) }
-        } else if (type.indexOf('INT') !== -1) {
-            obj = { labelName: (this.graphData && this.graphData.activeLabel) || '', sign: this.sign, targetProp: this.targetProp, targetValue: parseInt(this.targetValue) }
-        } else {
-            obj = { labelName: (this.graphData && this.graphData.activeLabel) || '', sign: this.sign, targetProp: this.targetProp, targetValue: this.targetValue }
-        }
-        this.cypherStore.upDateShowByFilter({
-            tabValue: this.tabValue,
-            type: this.targetLabel.type,
-            ...obj
-        })
-        let target: any = this.filterList.find((item) => item.labelName === obj.labelName && item.targetProp === obj.targetProp)
-        if (target) {
-            target.sign = obj.sign
-            target.targetProp = obj.targetProp
-            target.targetValue = obj.targetValue
-        } else {
-            this.filterList.push(obj)
-        }
-    }
 }
 </script>
 <style lang="less" scoped>

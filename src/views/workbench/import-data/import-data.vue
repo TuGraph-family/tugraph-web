@@ -208,7 +208,8 @@ export default class importData extends Vue {
         this.createLabelStore.getAllLabel({ graph: this.currentGraph })
     }
     get allLabel() {
-        return this.createLabelStore.allLabel
+        let target = this.createLabelStore.allLabel.find((item) => item.graph == this.currentGraph)
+        return target.allLabel
     }
 
     selectedValue: string = ''

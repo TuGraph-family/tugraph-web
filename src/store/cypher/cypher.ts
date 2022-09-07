@@ -18,6 +18,7 @@ const NODECOLORS = [
 const NODESIZE = [40, 60, 80]
 const EDGECOLORS = ['#98ACC3', '#66adff', '#37d4be', '#fdb45d', '#ff8aba', '#c397e3', '#92cf51', '#DD9B84', '#F57E7E', '#B4E3FF', '#FFEA66', '#E9BAFF', '#D4F5AA']
 const EDGESIZE = [1, 3, 5, 7, 9]
+
 interface TableData {
     [index: number]: { [propName: string]: any }
     length: number
@@ -56,12 +57,18 @@ interface GraphData {
     activeLabel: string // 当前选中的label
     activeLabelType: string
     addEdgeSrcAndDst: any[]
+    visualMethod: {
+        aStar?: { selectNode: 'start' | 'end' | ''; srcAndDst: { start: any; end: any } }
+        allPath?: {}
+    }
+    methodResult: any
     actionLog: {
         actionName: string
         options?: {
             [propName: string]: any
         }
     }
+    filterList: any[] // 用来存储过滤条件
     labels: Array<labelData>
     activeElement: Array<any>
     graph: { nodes: Array<{ [propName: string]: any }>; edges: Array<{ [propName: string]: any }> }
@@ -144,6 +151,17 @@ function craeteGraphData(params: any, actionName: string, actionOption?: any, cu
         activeLabelType: '',
         labels: labels,
         addEdgeSrcAndDst: [],
+        filterList: [],
+        methodResult: {},
+        visualMethod: {
+            aStar: {
+                selectNode: '',
+                srcAndDst: {
+                    start: {},
+                    end: {}
+                }
+            }
+        },
         actionLog: {
             actionName: actionName,
             options: actionOption
@@ -239,12 +257,46 @@ export default class Cypher extends VuexModule {
 
     cypherReasultDatas: Array<tabData> = []
     @Mutation
+    updateGraphDataMethodResult(params: { tabValue: string; res: any[] }) {
+        let tabValue = params.tabValue
+        let target = this.cypherReasultDatas.find((item) => item.id === tabValue)
+        let cypherReasultData = target && target.cypherReasultData
+        let graphData: GraphData = cypherReasultData && cypherReasultData.graphData
+        graphData && (graphData.methodResult = params.res)
+    }
+    @Mutation
     updateGraphDataAddEdgeSrcAndDst(params: { tabValue: string; addEdgeSrcAndDst: any[] }) {
         let tabValue = params.tabValue
         let target = this.cypherReasultDatas.find((item) => item.id === tabValue)
         let cypherReasultData = target && target.cypherReasultData
         let graphData: GraphData = cypherReasultData && cypherReasultData.graphData
         graphData && (graphData.addEdgeSrcAndDst = params.addEdgeSrcAndDst)
+    }
+    @Mutation
+    updateGraphDataAStar(params: {
+        tabValue: string
+        aStar: {
+            selectNode: '' | 'start' | 'end'
+            srcAndDst: { start: any; end: any }
+        }
+    }) {
+        let tabValue = params.tabValue
+        let target = this.cypherReasultDatas.find((item) => item.id === tabValue)
+        let cypherReasultData = target && target.cypherReasultData
+        let graphData: GraphData = cypherReasultData && cypherReasultData.graphData
+        graphData && (graphData.visualMethod.aStar = params.aStar)
+    }
+    @Mutation
+    updateGraphDataFilterList(params: { tabValue: string; filterList: any[] }) {
+        let tabValue = params.tabValue
+        let target = this.cypherReasultDatas.find((item) => item.id === tabValue)
+        let cypherReasultData = target && target.cypherReasultData
+        let graphData: GraphData = cypherReasultData && cypherReasultData.graphData
+        graphData &&
+            (graphData.actionLog = {
+                actionName: 'upDateShowByFilter'
+            })
+        graphData && (graphData.filterList = params.filterList)
     }
     @Mutation
     upDateCurrentCypher(cypher: string) {
@@ -369,6 +421,8 @@ export default class Cypher extends VuexModule {
             btns: {
                 'add-node': { active: false },
                 'add-edge': { active: false },
+                filter: { active: false },
+                method: { active: false },
                 layout: { active: false },
                 mergeEdge: { active: false },
                 fixed: { active: false },
@@ -456,27 +510,27 @@ export default class Cypher extends VuexModule {
                 }
             })
     }
-    @Mutation
-    upDateShowByFilter(params: { tabValue: string; labelName: string; targetProp: string; sign: string; type: string; targetValue: string }) {
-        let target = this.cypherReasultDatas.find((item) => item.id === params.tabValue)
-        let cypherReasultData = target && target.cypherReasultData
-        let graphDataData = cypherReasultData && cypherReasultData.graphData
-        graphDataData &&
-            graphDataData.labels.forEach((item) => {
-                item.name === params.labelName
-            })
-        graphDataData &&
-            (graphDataData.actionLog = {
-                actionName: 'upDateShowByFilter',
-                options: {
-                    labelName: params.labelName,
-                    sign: params.sign,
-                    targetProp: params.targetProp,
-                    targetValue: params.targetValue,
-                    type: params.type
-                }
-            })
-    }
+    // @Mutation
+    // upDateShowByFilter(params: { tabValue: string; labelName: string; targetProp: string; sign: string; type: string; targetValue: string }) {
+    //     let target = this.cypherReasultDatas.find((item) => item.id === params.tabValue)
+    //     let cypherReasultData = target && target.cypherReasultData
+    //     let graphDataData = cypherReasultData && cypherReasultData.graphData
+    //     graphDataData &&
+    //         graphDataData.labels.forEach((item) => {
+    //             item.name === params.labelName
+    //         })
+    //     graphDataData &&
+    //         (graphDataData.actionLog = {
+    //             actionName: 'upDateShowByFilter',
+    //             options: {
+    //                 labelName: params.labelName,
+    //                 sign: params.sign,
+    //                 targetProp: params.targetProp,
+    //                 targetValue: params.targetValue,
+    //                 type: params.type
+    //             }
+    //         })
+    // }
     @Mutation
     upDateColor(params: { tabValue: string; color: string; borderColor: string; labelName: string; labelType: string }) {
         let target = this.cypherReasultDatas.find((item) => item.id === params.tabValue)

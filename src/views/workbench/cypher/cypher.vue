@@ -20,7 +20,7 @@
                             </el-tooltip>
                             {{ item.cypher }}
                         </div>
-                        <div class="tab-btns">
+                        <div class="tab-btns" :class="showType">
                             <div
                                 class="tab-btn-item"
                                 :title="index"
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <div class="tab-result">
-                        <CypherResult v-if="item.cypherReasultData" :tabValue="item.id"></CypherResult>
+                        <CypherResult v-if="item.cypherReasultData" :graphName="item.graphName" :tabValue="item.id"></CypherResult>
                         <div v-else class="cypher-loading">
                             <Loading></Loading>
                         </div>
@@ -118,13 +118,22 @@ export default class WorkbenchCypher extends Vue {
     queryType: string = 'query1'
     queryTypes: { [prop: string]: string } = { query1: '语句查询', query2: '节点查询', query3: '路径查询' }
     maxNodeNumber: number = 5000
+
     get tabValue() {
         return this.cypherStore.tabValue
     }
     get cypherResultDatas() {
         return this.cypherStore.cypherReasultDatas
     }
-
+    get showType() {
+        let type = 'graph'
+        let data: any = this.cypherResultDatas && this.cypherResultDatas.find((item) => item.id === this.tabValue)
+        if (data && data.cypherReasultData) {
+            console.log(data.cypherReasultData)
+            type = data.cypherReasultData.showType
+        }
+        return type
+    }
     tabRemove(data: any) {
         this.cypherStore.tabRemove(data)
     }
@@ -135,6 +144,7 @@ export default class WorkbenchCypher extends Vue {
         this.cypherStore.upDateCurrentCypher(data)
     }
     upDateBtn(icon: any, tabValue: string, index: string, btns: any) {
+        let radios: Array<string> = ['method', 'filter', 'add-edge', 'add-node']
         let active = !icon.active
         if (index === 'fixed') {
             this.$cyEvents[this.tabValue].fixed(active)
@@ -151,7 +161,6 @@ export default class WorkbenchCypher extends Vue {
                 tabValue: this.tabValue,
                 data: []
             })
-            this.cypherStore.upDateBtns({ tabValue: tabValue, active: false, index: 'add-edge' })
             this.$cyEvents[this.tabValue].focusSourceOrEndNode(false)
         }
         if (index === 'add-edge') {
@@ -160,9 +169,31 @@ export default class WorkbenchCypher extends Vue {
                 data: []
             })
             this.$cyEvents[this.tabValue].focusSourceOrEndNode(true)
-            this.cypherStore.upDateBtns({ tabValue: tabValue, active: false, index: 'add-node' })
             !active && this.$cyEvents[this.tabValue].focusSourceOrEndNode(false)
         }
+        if (index === 'filter') {
+            this.cypherStore.upDateActiveElement({
+                tabValue: this.tabValue,
+                data: []
+            })
+            this.$cyEvents[this.tabValue].focusSourceOrEndNode(false)
+        }
+        if (index === 'method') {
+            this.cypherStore.updateGraphDataAStar({
+                tabValue: this.tabValue,
+                aStar: { selectNode: '', srcAndDst: { start: null, end: null } }
+            })
+            this.cypherStore.upDateActiveElement({
+                tabValue: this.tabValue,
+                data: []
+            })
+            this.$cyEvents[this.tabValue].focusSourceOrEndNode(false)
+        }
+        radios.forEach((item) => {
+            if (item !== index) {
+                this.cypherStore.upDateBtns({ tabValue: tabValue, active: false, index: item })
+            }
+        })
         if (index !== 'export' && index !== 'refresh' && index !== 'layout') {
             this.cypherStore.upDateBtns({ tabValue: tabValue, active: active, index: index })
         }
@@ -180,16 +211,16 @@ export default class WorkbenchCypher extends Vue {
         })
     }
     exportPNG() {
-        this.$cyEvents[this.tabValue].exportPNG()
+        this.showType === 'graph' && this.$cyEvents[this.tabValue].exportPNG()
     }
     exportJSON() {
-        this.$cyEvents[this.tabValue].exportJSON()
+        this.showType === 'graph' && this.$cyEvents[this.tabValue].exportJSON()
     }
     exportCSV() {
-        this.$cyEvents[this.tabValue].exportCSV()
+        this.showType === 'graph' && this.$cyEvents[this.tabValue].exportCSV()
     }
     changeLayout(data) {
-        this.$cyEvents[this.tabValue].changeLayout(data)
+        this.showType === 'graph' && this.$cyEvents[this.tabValue].changeLayout(data)
     }
     onContextmenu() {
         let target: any = event.target
@@ -481,15 +512,33 @@ export default class WorkbenchCypher extends Vue {
                 padding-right: 6px;
                 -webkit-box-sizing: content-box;
                 box-sizing: content-box;
-                cursor: pointer;
                 background-repeat: no-repeat;
                 background-size: 22px;
+            }
+            &.graph {
+                .tab-btn-item {
+                    cursor: pointer;
+                }
             }
             .mergeEdge {
                 background-image: url('../../../assets/cypher/fold.svg');
                 &.active,
                 &:hover {
                     background-image: url('../../../assets/cypher/fold-h.svg');
+                }
+            }
+            .filter {
+                background-image: url('../../../assets/cypher/filter-n.png');
+                &.active,
+                &:hover {
+                    background-image: url('../../../assets/cypher/filter-h.png');
+                }
+            }
+            .method {
+                background-image: url('../../../assets/cypher/method-n.png');
+                &.active,
+                &:hover {
+                    background-image: url('../../../assets/cypher/method-h.png');
                 }
             }
             .layout {
