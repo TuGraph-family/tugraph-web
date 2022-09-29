@@ -50,10 +50,10 @@
                         <div class="workbench-create-label-name">
                             {{ $t('text3') }}：{{ labelDetail.name }}
                             <div>
-                                <el-button size="mini" icon="el-icon-plus" @click="addLabelProp(labelDetail, activeName)">
+                                <el-button size="mini" icon="el-icon-plus" @click="addLabelProp(labelDetail, activeName === 'node' ? 'vertex' : 'edge')">
                                     {{ $t('text4') }}
                                 </el-button>
-                                <el-button size="mini" icon="el-icon-delete" @click="deleteLabel(labelDetail, activeName)">
+                                <el-button size="mini" icon="el-icon-delete" @click="deleteLabel(labelDetail, activeName === 'node' ? 'vertex' : 'edge')">
                                     {{ $t('text5') }}
                                 </el-button>
                             </div>
