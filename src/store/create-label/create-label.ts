@@ -23,8 +23,13 @@ interface labelData {
 export default class CreateLabel extends VuexModule {
     allLabel: any[] = []
     @Mutation
-    updateAllLabel(allLabel: any[]) {
-        this.allLabel = [...allLabel]
+    updateAllLabel(params: { graph: string; allLabel: any[] }) {
+        let target = this.allLabel.find((item) => item.graph === params.graph)
+        if (target) {
+            target.allLabel = params.allLabel
+        } else {
+            this.allLabel.push(params)
+        }
     }
     @Action({ commit: 'updateAllLabel' })
     async getAllLabel(params: { graph: string }) {
@@ -86,7 +91,10 @@ export default class CreateLabel extends VuexModule {
             })
         }
 
-        return allLabel
+        return {
+            graph: params.graph,
+            allLabel
+        }
     }
     @Action
     async createLabel(params: { graph: string; data: { name: string; fields: any[]; is_vertex: boolean; primary: string; edge_constraints?: any[] } }) {

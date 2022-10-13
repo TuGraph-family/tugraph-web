@@ -19,31 +19,37 @@
 <template>
     <div class="workbench-cypher-result">
         <div class="workbench-element-detail" v-if="showElementDetail && cypherResultData.showType === 'graph'">
-            <CypherResultElementDetail :tabValue="tabValue"></CypherResultElementDetail>
+            <CypherResultElementDetail :tabValue="tabValue" :graphName="graphName"></CypherResultElementDetail>
         </div>
         <div class="workbench-element-detail" v-if="showAddNode">
-            <CypherAddNode :tabValue="tabValue"></CypherAddNode>
+            <CypherAddNode :tabValue="tabValue" :graphName="graphName"></CypherAddNode>
         </div>
         <div class="workbench-element-detail" v-if="showEdgeNode">
-            <CypherAddEdge :tabValue="tabValue"></CypherAddEdge>
+            <CypherAddEdge :tabValue="tabValue" :graphName="graphName"></CypherAddEdge>
+        </div>
+        <div class="workbench-element-detail" v-if="showFilterBox">
+            <FilterBox :tabValue="tabValue" :graphName="graphName"></FilterBox>
+        </div>
+        <div class="workbench-element-detail" v-if="showMethod">
+            <VisaulMethodBox :tabValue="tabValue" :graphName="graphName"></VisaulMethodBox>
         </div>
         <div class="workbench-cypher-result-main">
             <div v-show="cypherResultData.showType === 'graph'">
-                <CypherResultLabel :tabValue="tabValue"></CypherResultLabel>
-                <CypherResultGraph :tabValue="tabValue"></CypherResultGraph>
+                <CypherResultLabel :tabValue="tabValue" :graphName="graphName"></CypherResultLabel>
+                <CypherResultGraph :tabValue="tabValue" :graphName="graphName"></CypherResultGraph>
             </div>
             <div v-show="cypherResultData.showType === 'table'">
-                <CypherResultTable :tabValue="tabValue"></CypherResultTable>
+                <CypherResultTable :tabValue="tabValue" :graphName="graphName"></CypherResultTable>
             </div>
             <div v-show="cypherResultData.showType === 'code'">
-                <CypherResultCode :tabValue="tabValue"></CypherResultCode>
+                <CypherResultCode :tabValue="tabValue" :graphName="graphName"></CypherResultCode>
             </div>
             <!-- <div v-show="cypherResultData.showType === '3d'">
                 <CypherResultGraph3D></CypherResultGraph3D>
             </div> -->
         </div>
         <div class="workbench-result-prop" v-if="showResultProp && cypherResultData.showType === 'graph'">
-            <CypherResultProp :tabValue="tabValue"></CypherResultProp>
+            <CypherResultProp :tabValue="tabValue" :graphName="graphName"></CypherResultProp>
         </div>
         <div class="workbench-cypher-result-right">
             <div class="workbench-cypher-result-graph btn" :class="cypherResultData.showType === 'graph' && 'active'" @click="changeShowType('graph')"><span>graph</span></div>
@@ -67,6 +73,8 @@ import CypherStore from '@/store/cypher/cypher'
 import CypherResultGraph3D from './cypher-result-3d.vue'
 import CypherAddNode from './cypher-add-node.vue'
 import CypherAddEdge from './cypher-add-edge.vue'
+import FilterBox from './cypher-filter-box.vue'
+import VisaulMethodBox from './cypher-visual-method.vue'
 @Component({
     components: {
         CypherResultGraph,
@@ -77,12 +85,15 @@ import CypherAddEdge from './cypher-add-edge.vue'
         CypherResultGraph3D,
         CypherResultElementDetail,
         CypherAddNode,
-        CypherAddEdge
+        CypherAddEdge,
+        FilterBox,
+        VisaulMethodBox
     }
 })
 export default class WorkbenchCypherResult extends Vue {
     cypherStore: CypherStore = getModule(CypherStore, store)
     @Prop(String) tabValue!: string
+    @Prop(String) graphName!: string
     get cypherResultData() {
         let result = this.cypherStore.cypherReasultDatas.find((item) => item.id === this.tabValue)
         return result && result.cypherReasultData
@@ -105,6 +116,22 @@ export default class WorkbenchCypherResult extends Vue {
         let target: any = this.cypherStore.cypherReasultDatas.find((item) => item.id === this.tabValue)
         if (target) {
             status = target.btns['add-edge'].active
+        }
+        return status
+    }
+    get showFilterBox() {
+        let status: boolean = false
+        let target: any = this.cypherStore.cypherReasultDatas.find((item) => item.id === this.tabValue)
+        if (target) {
+            status = target.btns['filter'].active
+        }
+        return status
+    }
+    get showMethod() {
+        let status: boolean = false
+        let target: any = this.cypherStore.cypherReasultDatas.find((item) => item.id === this.tabValue)
+        if (target) {
+            status = target.btns['method'].active
         }
         return status
     }
@@ -145,7 +172,9 @@ export default class WorkbenchCypherResult extends Vue {
                 return
             }
         }
-
+        Object.keys(this.btnsData).forEach((item) => {
+            this.cypherStore.upDateBtns({ tabValue: this.tabValue, active: false, index: item })
+        })
         this.cypherStore.upDatShowType({ tabValue: this.tabValue, showType: data })
     }
 }
@@ -158,7 +187,7 @@ export default class WorkbenchCypherResult extends Vue {
     background: #ffffff;
     display: flex;
     .workbench-element-detail {
-        width: 300px;
+        width: 350px;
         height: 100%;
         position: relative;
         border-right: 1px solid rgba(0, 0, 0, 0.1);

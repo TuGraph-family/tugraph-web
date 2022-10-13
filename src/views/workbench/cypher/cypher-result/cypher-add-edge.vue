@@ -59,17 +59,20 @@ export default class WorkbenchCypherAddNode extends Vue {
     subGraphManageStore: SubGraphManageStore = getModule(SubGraphManageStore, store)
     createLabelStore: CreateLabelStore = getModule(CreateLabelStore, store)
     @Prop(String) tabValue!: string
+    @Prop(String) graphName!: string
     targetEdgeLabel: string = ''
     labelProps: Array<InputData> = []
     srcNode: any = null
     dstNode: any = null
     get nodeLabels() {
-        return this.createLabelStore.allLabel.filter((item) => item.type === 'node')
+        let target = this.createLabelStore.allLabel.find((item) => item.graph == this.graphName)
+        return target.allLabel.filter((item) => item.type === 'node')
     }
     get edgeLabels() {
         let data = []
         if (this.srcAndDst.length) {
-            data = this.createLabelStore.allLabel.filter((item) => {
+            let target = this.createLabelStore.allLabel.find((item) => item.graph == this.graphName)
+            data = target.allLabel.filter((item) => {
                 if (item.type === 'edge') {
                     let constraints = item.constraints || []
                     let has = false
@@ -143,7 +146,7 @@ export default class WorkbenchCypherAddNode extends Vue {
         }
         let data = this.labelProps
         let result = await this.cypherStore.addNodeOrEdge({
-            graph: this.subGraphManageStore.selectedSubGraph,
+            graph: this.graphName,
             tabValue: this.tabValue,
             elementType: 'edge',
             data: data,

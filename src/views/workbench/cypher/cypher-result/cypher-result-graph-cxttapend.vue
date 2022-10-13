@@ -71,10 +71,12 @@ export default class GraphCxttapend extends Vue {
         return menuList
     }
     get nodeLabels() {
-        return this.createLabelStore.allLabel.filter((item) => item.type === 'node')
+        let target = this.createLabelStore.allLabel.find((item) => item.graph === this.subGraphManageStore.selectedSubGraph)
+        return target.filter((item) => item.type === 'node')
     }
     get edgeLabels() {
-        return this.createLabelStore.allLabel.filter((item) => item.type === 'edge')
+        let target = this.createLabelStore.allLabel.find((item) => item.graph === this.subGraphManageStore.selectedSubGraph)
+        return target.filter((item) => item.type === 'edge')
     }
     created() {
         let cypher = '()'

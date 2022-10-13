@@ -115,10 +115,12 @@ export default class QuickQueryPath extends Vue {
         this.getPathList()
     }
     get nodeLabels() {
-        return this.createLabelStore.allLabel.filter((item) => item.type === 'node')
+        let target = this.createLabelStore.allLabel.find((item) => item.graph == this.currentSelectedGraph)
+        return target.allLabel.filter((item) => item.type === 'node')
     }
     get edgeLabels() {
-        return this.createLabelStore.allLabel.filter((item) => item.type === 'edge')
+        let target = this.createLabelStore.allLabel.find((item) => item.graph == this.currentSelectedGraph)
+        return target.allLabel.filter((item) => item.type === 'edge')
     }
     getPathList() {
         if (this.targetPath.length === 0) {

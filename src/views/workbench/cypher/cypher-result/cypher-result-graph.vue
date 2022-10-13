@@ -21,13 +21,14 @@ import dblclick from 'cytoscape-dblclick'
 import popper from 'cytoscape-popper'
 import { forceOption, gridOption, treeOption, circleOption } from './cypher-result-graph-layout'
 import edgehandles from 'cytoscape-edgehandles'
-
+import cytoscapeAllPaths from 'cytoscape-all-paths'
 import Cxttapend from './cypher-result-graph-cxttapend.vue'
 
 cytoscape.use(edgehandles)
 cytoscape.use(dblclick)
 cytoscape.use(euler)
 cytoscape.use(popper)
+cytoscape.use(cytoscapeAllPaths)
 
 interface cyData {
     data: {
@@ -63,7 +64,7 @@ export default class WorkbenchCypherResultGraph extends Vue {
     circleOption: any = circleOption
     // addEdgeStatus是true开始添加边，可以进行连线的开关
     addEdgeStatus: boolean = false
-
+    _cyMethod: any = null
     @Prop(String) tabValue!: string
     get activeTabValue() {
         return this.cypherStore.tabValue
@@ -95,6 +96,11 @@ export default class WorkbenchCypherResultGraph extends Vue {
         let data = this.cypherStore.cypherReasultDatas.find((item) => item.id === this.tabValue)
         return data && data.btns.hover.active
     }
+
+    get isMethod() {
+        let data = this.cypherStore.cypherReasultDatas.find((item) => item.id === this.tabValue)
+        return data && data.btns.method.active
+    }
     get graphData() {
         let data, cypherReasultData, graphData
         data = this.cypherStore.cypherReasultDatas.find((item) => item.id === this.tabValue)
@@ -104,6 +110,9 @@ export default class WorkbenchCypherResultGraph extends Vue {
     }
     get addEdgeSrcAndDst() {
         return this.graphData.addEdgeSrcAndDst
+    }
+    get aStar() {
+        return this.graphData.visualMethod.aStar
     }
     @Watch('graphData', { immediate: true, deep: true })
     onChangeGraphData(newVal: any, oldVal: any) {
@@ -140,7 +149,7 @@ export default class WorkbenchCypherResultGraph extends Vue {
         } else if (newVal && newVal.actionLog && newVal.actionLog.actionName === 'queryNeighborByCypher') {
             this.upDateByDbClick()
         } else if (newVal && newVal.actionLog && newVal.actionLog.actionName === 'upDateShowByFilter') {
-            this.upDateShowByFilter(newVal.actionLog)
+            this.upDateShowByFilter()
         }
     }
     created() {}
@@ -149,6 +158,39 @@ export default class WorkbenchCypherResultGraph extends Vue {
         this.$cyEvents[this.tabValue] = {
             focusNode: (nodeId: string) => {
                 this.focusNode(nodeId)
+            },
+            shortestPath: (params: { root: string; goal: string }) => {
+                let a = this._cy.$().aStar({ ...params, directed: true })
+                let res = a.path
+                if (res && res.length > 2) {
+                    res.addClass('active')
+                    let data = res.map((item) => {
+                        return item.data()
+                    })
+                    this.cypherStore.updateGraphDataMethodResult({ tabValue: this.tabValue, res: data })
+                } else {
+                    this.$message({ message: '执行无结果', type: 'info' })
+                }
+            },
+            allPath: () => {
+                let res = this._cy.$().cytoscapeAllPaths()
+                res = res.filter((item) => item.length > 1)
+                if (res.length > 0) {
+                    let data = res.map((item) => {
+                        let paths = []
+                        item.forEach((ele) => {
+                            paths.push(ele.data())
+                        })
+                        return paths
+                    })
+                    console.log(res)
+                    this.cypherStore.updateGraphDataMethodResult({ tabValue: this.tabValue, res: data })
+                }
+            },
+            activePath: (path: any[]) => {
+                path.forEach((item) => {
+                    this._cy.$(`#${item.id}`).addClass('active')
+                })
             },
             focusSourceOrEndNode: (status: boolean) => {
                 this.focusSourceOrEndNode(status)
@@ -215,6 +257,7 @@ export default class WorkbenchCypherResultGraph extends Vue {
         option.elements.nodes = this.cyNodes
         option.elements.edges = this.cyEdges
         this._cy = cytoscape(option)
+        // window.lpf = this._cy
         this._eh = this._cy.edgehandles(ADDEDGEOPTION)
         this._layout = this._cy.layout(this.currentLayoutOption)
         this._cyDom = dom
@@ -417,6 +460,7 @@ export default class WorkbenchCypherResultGraph extends Vue {
             nodes: this.cyNodes,
             edges: this.cyEdges
         })
+        this.upDateShowByFilter()
         this._layout.stop()
         this._cy
             .layout({ name: 'grid' })
@@ -532,47 +576,37 @@ export default class WorkbenchCypherResultGraph extends Vue {
         }
         this.cypherStore.upDateActionLogByEnd({ tabValue: this.tabValue, actionName: 'upDateShow' })
     }
-    upDateShowByFilter(data: any) {
-        let labelName = data.options.labelName
-        let targetEle
-        data.options.type === 'node' ? (targetEle = this._cy.nodes('.' + labelName)) : (targetEle = this._cy.edges('.' + labelName))
-        targetEle.forEach((item) => {
-            item.removeClass('hidden')
-        })
-        if (!data.options.clear) {
-            if (data.options.sign === '=') {
-                targetEle.forEach((item) => {
-                    if (item.data('properties')[data.options.targetProp] !== data.options.targetValue) {
-                        item.addClass('hidden')
-                    }
-                })
-            } else if (data.options.sign === '>') {
-                targetEle.forEach((item) => {
-                    if (item.data('properties')[data.options.targetProp] <= data.options.targetValue) {
-                        item.addClass('hidden')
-                    }
-                })
-            } else if (data.options.sign === '<') {
-                targetEle.forEach((item) => {
-                    if (item.data('properties')[data.options.targetProp] >= data.options.targetValue) {
-                        item.addClass('hidden')
-                    }
-                })
-            } else if (data.options.sign === '>=') {
-                targetEle.forEach((item) => {
-                    if (item.data('properties')[data.options.targetProp] < data.options.targetValue) {
-                        item.addClass('hidden')
-                    }
-                })
-            } else if (data.options.sign === '<=') {
-                targetEle.forEach((item) => {
-                    if (item.data('properties')[data.options.targetProp] > data.options.targetValue) {
-                        item.addClass('hidden')
-                    }
-                })
+    upDateShowByFilter() {
+        let data = this.graphData.filterList || []
+        data.forEach((item) => {
+            this._cy.$('.' + item.label).addClass('hidden')
+            if (item.on === true) {
+                let params = item.paramsList.filter((p) => p.value !== null)
+                if (params.length === 0) {
+                    this._cy[item.type + 's']('.' + item.label).removeClass('hidden')
+                } else {
+                    params.forEach((p) => {
+                        this._cy.$('.' + item.label).forEach((ele) => {
+                            let obj = ele.data('properties')
+                            let res: boolean
+                            if (p.labelType === 'number') {
+                                res = eval(obj[p.prop] + p.connect + p.value)
+                            } else {
+                                res = eval(JSON.stringify(obj[p.prop]) + p.connect + JSON.stringify(p.value))
+                            }
+                            if (res) {
+                                ele.removeClass('hidden')
+                            }
+                        })
+                    })
+                }
+            } else {
+                this._cy[item.type + 's']('.' + item.label).removeClass('hidden')
             }
+        })
+        if (data.length === 0) {
+            this._cy.$().removeClass('hidden')
         }
-
         this.cypherStore.upDateActionLogByEnd({ tabValue: this.tabValue, actionName: 'upDateShowByFilter' })
     }
     mergeEdge() {
@@ -764,10 +798,23 @@ export default class WorkbenchCypherResultGraph extends Vue {
         let node = e.target
         if (this.addEdgeStatus) {
             this._eh.start(node)
+        } else if (this.isMethod) {
+            if (this.aStar.selectNode === 'start') {
+                this.cypherStore.updateGraphDataAStar({
+                    tabValue: this.tabValue,
+                    aStar: { selectNode: 'start', srcAndDst: { start: node.data(), end: this.aStar.srcAndDst.end } }
+                })
+            } else if (this.aStar.selectNode === 'end') {
+                this.cypherStore.updateGraphDataAStar({
+                    tabValue: this.tabValue,
+                    aStar: { selectNode: 'end', srcAndDst: { start: this.aStar.srcAndDst.start, end: node.data() } }
+                })
+            }
         } else if (this.addEdgeSrcAndDst.length === 0) {
             let label = node.data().sysPropties.label
             this.cypherStore.upDateBtns({ tabValue: this.tabValue, active: false, index: 'add-node' })
             this.cypherStore.upDateBtns({ tabValue: this.tabValue, active: false, index: 'add-edge' })
+            this.cypherStore.upDateBtns({ tabValue: this.tabValue, active: false, index: 'filter' })
             this.cypherStore.upDateActiveElement({
                 tabValue: this.tabValue,
                 data: [node.data()]
@@ -848,9 +895,10 @@ export default class WorkbenchCypherResultGraph extends Vue {
     nodeMouseDown(e: any) {}
     // 点击边
     edgeClick(e: any) {
-        if (this.addEdgeSrcAndDst.length === 0) {
+        if (this.addEdgeSrcAndDst.length === 0 && !this.isMethod) {
             this.cypherStore.upDateBtns({ tabValue: this.tabValue, active: false, index: 'add-node' })
             this.cypherStore.upDateBtns({ tabValue: this.tabValue, active: false, index: 'add-edge' })
+            this.cypherStore.upDateBtns({ tabValue: this.tabValue, active: false, index: 'filter' })
             let edge = e.target
             let data = e.target.data()
             let mergeData = e.target.data().mergeData
@@ -871,6 +919,7 @@ export default class WorkbenchCypherResultGraph extends Vue {
         let child = dom.querySelector('#popperSearch')
         if (isCy) {
             this.cypherStore.upDateBtns({ tabValue: this.tabValue, active: false, index: 'add-node' })
+            this.cypherStore.upDateBtns({ tabValue: this.tabValue, active: false, index: 'filter' })
             if (!this.addEdgeStatus) {
                 this.cypherStore.upDateBtns({ tabValue: this.tabValue, active: false, index: 'add-edge' })
                 this.focusSourceOrEndNode(false)

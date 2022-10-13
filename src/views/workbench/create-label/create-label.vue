@@ -50,10 +50,10 @@
                         <div class="workbench-create-label-name">
                             {{ $t('text3') }}：{{ labelDetail.name }}
                             <div>
-                                <el-button size="mini" icon="el-icon-plus" @click="addLabelProp(labelDetail, activeName)">
+                                <el-button size="mini" icon="el-icon-plus" @click="addLabelProp(labelDetail, activeName === 'node' ? 'vertex' : 'edge')">
                                     {{ $t('text4') }}
                                 </el-button>
-                                <el-button size="mini" icon="el-icon-delete" @click="deleteLabel(labelDetail, activeName)">
+                                <el-button size="mini" icon="el-icon-delete" @click="deleteLabel(labelDetail, activeName === 'node' ? 'vertex' : 'edge')">
                                     {{ $t('text5') }}
                                 </el-button>
                             </div>
@@ -288,7 +288,6 @@ export default class WorkbenchCreateLabel extends Vue {
     searchValue: string = ''
     subGraphManageStore: SubGraphManageStore = getModule(SubGraphManageStore, store)
     createLabelStore: CreateLabelStore = getModule(CreateLabelStore, store)
-    myChart: any = null
     vertexOptionData: any = null
     edgeOptionData: any = null
     vertexLabels: any = []
@@ -322,19 +321,11 @@ export default class WorkbenchCreateLabel extends Vue {
     }
     @Watch('currentSelectedGraph')
     async onChangeCreateLabelStore() {
-        this.myChart && this.myChart.clear()
         this.loading = true
-        if (this.currentSelectedGraph) {
-            await this.createLabelStore.getAllLabel({ graph: this.currentSelectedGraph })
-        } else {
-            this.vertexLabels = []
-            this.edgeLabels = []
-            this.createLabelStore.updateAllLabel([])
-        }
-        this.loading = false
     }
     get allLabels() {
-        return this.createLabelStore.allLabel
+        let target = this.createLabelStore.allLabel.find((item) => item.graph == this.currentSelectedGraph)
+        return target ? target.allLabel : []
     }
     @Watch('allLabels', { deep: true })
     onChangeAllLabels() {
