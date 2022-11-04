@@ -59,8 +59,16 @@ const CYTOSCAPECONFIG: any = {
             }
         },
         {
+            selector: 'node.large',
+            style: {}
+        },
+        {
             selector: 'node.active',
             style: {
+                'border-width': function(ele: any) {
+                    let size = ele.data('size')
+                    return size / 6
+                },
                 'border-color': '#44527C'
             }
         },
@@ -98,6 +106,13 @@ const CYTOSCAPECONFIG: any = {
             }
         },
         {
+            selector: 'node.isMerge',
+            style: {
+                width: 0,
+                height: 0
+            }
+        },
+        {
             selector: 'edge',
             style: {
                 width: function(ele) {
@@ -126,7 +141,7 @@ const CYTOSCAPECONFIG: any = {
                 'font-size': 14,
                 padding: 3,
                 'curve-style': 'bezier',
-                'control-point-step-size': 40,
+                'control-point-step-size': 80,
                 'target-arrow-shape': 'vee',
                 'target-arrow-color': function(ele: any) {
                     let color = ele.data('color')
@@ -145,6 +160,8 @@ const CYTOSCAPECONFIG: any = {
                 'text-valign': 'top',
                 'text-halign': 'center',
                 'text-background-padding': 3
+                // 'loop-direction': '0deg',
+                // 'loop-sweep': '-100deg'
             }
         },
         {

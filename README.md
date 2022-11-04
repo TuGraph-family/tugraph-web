@@ -1,6 +1,5 @@
 # TuGraph Browser
 
-<img style="width:1920px;height:auto;" src="https://tugraph-web-static.oss-cn-beijing.aliyuncs.com/%E6%96%87%E6%A1%A3/2.Operating/4.tugraph-browser-create-subgraph-01.png" alt="alt 创建子图">
 TuGraph Browser 是 TuGraph 图数据库的可视化工具。使用 TuGraph Browser 可以完成图谱、模型、数据等的创建和导入。同时可用使用 TuGraph Cypher 进行数据的操作。
 
 ## 安装项目

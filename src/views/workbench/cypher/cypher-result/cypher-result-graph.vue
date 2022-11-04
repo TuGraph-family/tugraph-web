@@ -23,13 +23,14 @@ import { forceOption, gridOption, treeOption, circleOption } from './cypher-resu
 import edgehandles from 'cytoscape-edgehandles'
 import cytoscapeAllPaths from 'cytoscape-all-paths'
 import Cxttapend from './cypher-result-graph-cxttapend.vue'
+import cytoscapeLasso from 'cytoscape-lasso'
 
 cytoscape.use(edgehandles)
 cytoscape.use(dblclick)
 cytoscape.use(euler)
 cytoscape.use(popper)
 cytoscape.use(cytoscapeAllPaths)
-
+cytoscape.use(cytoscapeLasso)
 interface cyData {
     data: {
         [propName: string]: any
@@ -53,6 +54,7 @@ export default class WorkbenchCypherResultGraph extends Vue {
     fixNodeList: { [propName: string]: any } = {}
     _currenDbClickNode: any = null
     _cyDom: any = null
+    largeNodeList: any[] = []
     // 初始缩放等级
     zoomLevel: number = 1
     cyNodes: Array<any> = []
@@ -88,10 +90,12 @@ export default class WorkbenchCypherResultGraph extends Vue {
         let data = this.cypherStore.cypherReasultDatas.find((item) => item.id === this.tabValue)
         return data && data.btns.mergeEdge.active
     }
+
     @Watch('isMergeEdge')
     onChangeIsMergeEdge() {
         this.mergeEdge()
     }
+
     get isHover() {
         let data = this.cypherStore.cypherReasultDatas.find((item) => item.id === this.tabValue)
         return data && data.btns.hover.active
@@ -210,6 +214,87 @@ export default class WorkbenchCypherResultGraph extends Vue {
             },
             changeLayout: (data: string) => {
                 this.cyLayout(data)
+            },
+            mergeNodes: (status: boolean) => {
+                if (status) {
+                    let activeNodes = this._cy.nodes('.active')
+                    let id = new Date().getTime() + ''
+                    let edges = activeNodes.connectedEdges()
+
+                    if (activeNodes.length > 1) {
+                        /**
+                         * 1. 隐藏合并的点
+                         * 2. 隐藏相关联的边（点隐藏后，边自动隐藏）
+                         * 3. 构建大点
+                         * 4. 构建大点先关的边
+                         * 5. 进行绘图（加点，加边）
+                         */
+                        activeNodes.addClass(['isMerge'])
+
+                        let largetNode: any = {
+                            data: {
+                                id: id,
+                                color: '#3D6F08',
+                                size: 100,
+                                type: 'node',
+                                properties: { name: `聚合点（${activeNodes.length}）` },
+                                sysPropties: { vid: id, label: '聚合点' },
+                                displayName: 'name',
+                                displayNameSource: 'props',
+                                mergeData: []
+                            },
+                            position: { x: activeNodes[0].position().x, y: activeNodes[0].position().y },
+                            classes: ['large']
+                        }
+                        let largeNodeEdges = []
+                        activeNodes.forEach((node: any) => {
+                            id += '-' + node.data('id')
+                            largetNode.data.id = id
+                            largetNode.data.sysPropties.vid = id
+                            largetNode.data.mergeData.push(node.data())
+                        })
+                        // MATCH (n) WHERE id(n)=44 RETURN n LIMIT 100
+                        edges.forEach((edge) => {
+                            let src = edge.data('source')
+                            let dst = edge.data('target')
+
+                            let edgeData: any = {
+                                data: {
+                                    ...edge.data()
+                                },
+                                classes: edge.classes()
+                            }
+                            let srcIsHidden = this._cy
+                                .nodes('#' + src)
+                                .classes()
+                                .includes('isMerge')
+                            let dstIsHidden = this._cy
+                                .nodes('#' + dst)
+                                .classes()
+                                .includes('isMerge')
+                            srcIsHidden && (edgeData.data.source = id)
+                            dstIsHidden && (edgeData.data.target = id)
+                            edgeData.data.id = edgeData.data.source + edgeData.data.target + edgeData.data.id
+                            edgeData.classes.push('large')
+                            largeNodeEdges.push(edgeData)
+                        })
+                        console.log(largeNodeEdges)
+                        this._cy.add({ nodes: [largetNode], edges: largeNodeEdges })
+                        activeNodes.removeClass('active')
+                        console.log(largetNode)
+                    } else {
+                        this.$message({
+                            message: '请按住【Shift】键，并拖动鼠标左键，框选要合并的节点。',
+                            type: 'warning'
+                        })
+                        return
+                    }
+                } else {
+                    let mergeNodes = this._cy.$('.isMerge')
+                    let largetEles = this._cy.$('.large')
+                    this._cy.remove(largetEles)
+                    mergeNodes.removeClass(['isMerge'])
+                }
             }
         }
     }
@@ -259,6 +344,7 @@ export default class WorkbenchCypherResultGraph extends Vue {
         this._cy = cytoscape(option)
         // window.lpf = this._cy
         this._eh = this._cy.edgehandles(ADDEDGEOPTION)
+        this._cy.lassoSelectionEnabled(true)
         this._layout = this._cy.layout(this.currentLayoutOption)
         this._cyDom = dom
         this.addEventToCy([
@@ -311,6 +397,11 @@ export default class WorkbenchCypherResultGraph extends Vue {
                 eventType: 'ehcomplete',
                 eventTarget: 'cy',
                 eventCallback: this.addEdgeComplete
+            },
+            {
+                eventType: 'box',
+                eventTarget: 'cy',
+                eventCallback: this.box
             }
         ])
         this._layout.run()
@@ -456,6 +547,14 @@ export default class WorkbenchCypherResultGraph extends Vue {
         this._cy.nodes().forEach((item: any) => {
             item.lock()
         })
+        this._cy.nodes('.large').forEach((node: any) => {
+            node.data('mergeData').forEach((item) => {
+                let target = this.cyNodes.find((n) => n.data.id === item.id)
+                if (target) {
+                    target.classes = [...['hidden', 'isMerge'], ...target.classes]
+                }
+            })
+        })
         this._cy.add({
             nodes: this.cyNodes,
             edges: this.cyEdges
@@ -554,6 +653,12 @@ export default class WorkbenchCypherResultGraph extends Vue {
     upDateByDeleteEdge(data: any) {
         data.options.forEach((id: any) => {
             this._cy.remove('#' + id)
+            this._cy.edges('.large').forEach((item) => {
+                if (item.data('sysPropties').uid == id) {
+                    let uid = item.data('id')
+                    this._cy.remove('#' + uid)
+                }
+            })
         })
         let uid = data.options[0].split('_')
         let sdl = uid[0] + '_' + uid[1] + '_' + uid[2]
@@ -627,6 +732,7 @@ export default class WorkbenchCypherResultGraph extends Vue {
             data: []
         })
     }
+
     fixed() {
         this._layout && this._layout.stop()
     }
@@ -815,9 +921,10 @@ export default class WorkbenchCypherResultGraph extends Vue {
             this.cypherStore.upDateBtns({ tabValue: this.tabValue, active: false, index: 'add-node' })
             this.cypherStore.upDateBtns({ tabValue: this.tabValue, active: false, index: 'add-edge' })
             this.cypherStore.upDateBtns({ tabValue: this.tabValue, active: false, index: 'filter' })
+            let isMergeNode = node.data('sysPropties').label == '聚合点'
             this.cypherStore.upDateActiveElement({
                 tabValue: this.tabValue,
-                data: [node.data()]
+                data: !isMergeNode ? [node.data()] : node.data('mergeData')
             })
             this._cy.$().removeClass('active')
             node.addClass('active')
@@ -861,35 +968,37 @@ export default class WorkbenchCypherResultGraph extends Vue {
     cyCxttapend(e: any) {
         let node = e.target
         let id = e.target.data('id')
-        let n = e.target.scratch()
-        n.euler && (n.euler.locked = true)
-        this.fixNodeList[id] = e.target
-        this._currenDbClickNode = e.target
-        this.targetVertexID = node.data('sysPropties').vid
-        let dom = this.$refs['workbenchCypherResultGraph']
-        let nodePopper = document.getElementById('popperSearch')
-        nodePopper && dom.removeChild(nodePopper)
-        // 右键菜单代码后续需要优化 @诗源
-        let popper = node.popper({
-            content: () => {
-                let div: HTMLDivElement = document.createElement('div')
-                let content = this.$refs['cxttapend'].$el
-                div.setAttribute('id', 'popperSearch')
-                div.appendChild(content)
-                dom.appendChild(div)
-                return div
-            },
-            popper: {
-                placement: 'right'
+        if (!node.classes().includes('large')) {
+            let n = e.target.scratch()
+            n.euler && (n.euler.locked = true)
+            this.fixNodeList[id] = e.target
+            this._currenDbClickNode = e.target
+            this.targetVertexID = node.data('sysPropties').vid
+            let dom = this.$refs['workbenchCypherResultGraph']
+            let nodePopper = document.getElementById('popperSearch')
+            nodePopper && dom.removeChild(nodePopper)
+            // 右键菜单代码后续需要优化 @诗源
+            let conten: any
+            let popper = node.popper({
+                content: () => {
+                    let div: HTMLDivElement = document.createElement('div')
+                    let content = this.$refs['cxttapend'].$el
+                    div.setAttribute('id', 'popperSearch')
+                    div.appendChild(content)
+                    dom.appendChild(div)
+                    return div
+                },
+                popper: {
+                    placement: 'right'
+                }
+                // renderedPosition: () => ({ x: position.x + 60, y: position.y - 60 })
+            })
+            let update = () => {
+                popper.update()
             }
-
-            // renderedPosition: () => ({ x: position.x + 60, y: position.y - 60 })
-        })
-        let update = () => {
-            popper.update()
+            node.on('position', update)
+            this._cy.on('pan zoom resize', update)
         }
-        node.on('position', update)
-        this._cy.on('pan zoom resize', update)
     }
     // 鼠标按下[点]
     nodeMouseDown(e: any) {}
@@ -964,7 +1073,14 @@ export default class WorkbenchCypherResultGraph extends Vue {
         let data = [srcNode, dstNode, edgeData]
         this.cypherStore.updateGraphDataAddEdgeSrcAndDst({ tabValue: this.tabValue, addEdgeSrcAndDst: data })
     }
-
+    //框选结束
+    box(e) {
+        let node = e.target
+        if (!node.classes().includes('large') && !node.classes().includes('isMerge') && !node.classes().includes('active')) {
+            console.log(node.data())
+            e.target[0].addClass('active')
+        }
+    }
     //  ----- 鼠标交互事件End -----
 }
 </script>

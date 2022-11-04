@@ -34,6 +34,10 @@
                                     <div @click.self.stop="exportJSON">{{ $t('text2') }}</div>
                                     <div @click.self.stop="exportCSV">{{ $t('text4') }}</div>
                                 </div>
+                                <div v-if="index === 'mergeVertex'" class="merge-btn-group">
+                                    <div @click.self.stop="mergeNodes(true)">{{ $t('merge.t1') }}</div>
+                                    <div @click.self.stop="mergeNodes(false)">{{ $t('merge.t2') }}</div>
+                                </div>
                                 <div v-if="index === 'layout'" class="layout-btn-group">
                                     <div @click.self.stop="changeLayout('force')">{{ $t('text8') }}</div>
                                     <div @click.self.stop="changeLayout('grid')">{{ $t('text5') }}</div>
@@ -194,7 +198,7 @@ export default class WorkbenchCypher extends Vue {
                 this.cypherStore.upDateBtns({ tabValue: tabValue, active: false, index: item })
             }
         })
-        if (index !== 'export' && index !== 'refresh' && index !== 'layout') {
+        if (index !== 'export' && index !== 'refresh' && index !== 'layout' && index !== 'mergeVertex') {
             this.cypherStore.upDateBtns({ tabValue: tabValue, active: active, index: index })
         }
     }
@@ -221,6 +225,9 @@ export default class WorkbenchCypher extends Vue {
     }
     changeLayout(data) {
         this.showType === 'graph' && this.$cyEvents[this.tabValue].changeLayout(data)
+    }
+    mergeNodes(status) {
+        this.showType === 'graph' && this.$cyEvents[this.tabValue].mergeNodes(status)
     }
     onContextmenu() {
         let target: any = event.target
@@ -525,6 +532,37 @@ export default class WorkbenchCypher extends Vue {
                 &.active,
                 &:hover {
                     background-image: url('../../../assets/cypher/fold-h.svg');
+                }
+            }
+            .mergeVertex {
+                background-image: url('../../../assets/cypher/merge-vertex-n.png');
+                .merge-btn-group {
+                    position: absolute;
+                    width: 100px;
+                    -webkit-box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.3);
+                    box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.3);
+                    background-color: #fff;
+                    display: none;
+                    z-index: 99;
+                    top: 25px;
+                    right: 0;
+                    overflow: hidden;
+                    border-radius: 5px;
+                    > div {
+                        text-align: center;
+                        line-height: 30px;
+                        color: #666;
+                    }
+                    > div:hover {
+                        color: #4481e6;
+                    }
+                }
+                &.active,
+                &:hover {
+                    background-image: url('../../../assets/cypher/merge-vertex-h.png');
+                    .merge-btn-group {
+                        display: block;
+                    }
                 }
             }
             .filter {

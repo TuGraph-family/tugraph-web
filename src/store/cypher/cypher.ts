@@ -240,6 +240,7 @@ function getNodeIdsByEids(params: any): { nodeIds: Array<number>; edgeIds: Array
             }
         })
     })
+
     return {
         nodeIds: [...new Set(nodeIds)],
         edgeIds: [...new Set(edgeIds)]
@@ -252,7 +253,7 @@ async function querySubGraph(graph: string, nodeIds: Array<number>) {
 
 @Module({ name: 'Cypher' })
 export default class Cypher extends VuexModule {
-    currentCypher: string = 'MATCH (n) RETURN n LIMIT 100'
+    currentCypher: string = ' MATCH (n) RETURN n LIMIT 100'
     tabValue: string = ''
 
     cypherReasultDatas: Array<tabData> = []
@@ -425,6 +426,7 @@ export default class Cypher extends VuexModule {
                 method: { active: false },
                 layout: { active: false },
                 mergeEdge: { active: false },
+                mergeVertex: { active: false },
                 fixed: { active: false },
                 hover: { active: false },
                 export: { active: false },
@@ -630,9 +632,10 @@ export default class Cypher extends VuexModule {
             } else if (params.actionType === 'edit') {
                 if (params.elementType === 'node') {
                     let targetNode: any
-                    graphData && (targetNode = graphData.graph.nodes.find((item) => item.vid.toString() === params.backID))
+                    graphData && (targetNode = graphData.graph.nodes.find((item) => item.vid.toString() == params.backID))
                     targetNode && Object.keys(targetNode.properties).forEach((item) => (targetNode.properties[item] = params.data[item]))
                     // console.log(targetNode)
+
                     graphData &&
                         (graphData.actionLog = {
                             actionName: 'editNodes',
@@ -640,7 +643,7 @@ export default class Cypher extends VuexModule {
                         })
                 } else if (params.elementType === 'edge') {
                     let targetEdge: any
-                    graphData && (targetEdge = graphData.graph.edges.find((item) => item.uid.toString() === params.backID))
+                    graphData && (targetEdge = graphData.graph.edges.find((item) => item.uid.toString() == params.backID))
 
                     targetEdge && Object.keys(targetEdge.properties || {}).forEach((item) => (targetEdge.properties[item] = params.data[item]))
                     // console.log(targetEdge)
