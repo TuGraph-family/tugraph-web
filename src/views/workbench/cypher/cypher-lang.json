@@ -12,6 +12,10 @@
             "text1": "Close current page",
             "text2": "Close other pages",
             "text3": "Close all pages"
+        },
+        "merge": {
+            "t1": "merge",
+            "t2": "spread"
         }
     },
     "zh": {
@@ -27,6 +31,10 @@
             "text1": "关闭当前页",
             "text2": "关闭其他页",
             "text3": "关闭所有页"
+        },
+        "merge": {
+            "t1": "合并",
+            "t2": "散开"
         }
     }
 }

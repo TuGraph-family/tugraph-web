@@ -37,7 +37,7 @@
                         <span :title="node.label">
                             <span class="key">{{ data.key }}</span>
                             <span>: </span>
-                            <el-tooltip class="item" effect="dark" :content="data.value" placement="top">
+                            <el-tooltip class="item" effect="dark" :content="data.value + ''" placement="top">
                                 <span class="value" :class="data.valueType">
                                     <span v-if="data.valueType === 'String'" class="value">"</span><span v-if="data.valueType === 'Function'" class="value Number">f </span>
                                     <span>{{ data.value }}</span>

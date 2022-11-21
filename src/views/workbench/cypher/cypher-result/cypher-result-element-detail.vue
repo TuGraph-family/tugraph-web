@@ -140,7 +140,7 @@ export default class WorkbenchCypherResultElementDetail extends Vue {
                     result = await this.cypherStore.deleteNodeOrEdge({
                         graph: this.subGraphManageStore.selectedSubGraph,
                         tabValue: this.tabValue,
-                        id: element.id,
+                        id: element.sysPropties.vid,
                         elementType: 'node',
                         label: element.sysPropties.label
                     })
@@ -148,7 +148,7 @@ export default class WorkbenchCypherResultElementDetail extends Vue {
                     result = await this.cypherStore.deleteNodeOrEdge({
                         graph: this.subGraphManageStore.selectedSubGraph,
                         tabValue: this.tabValue,
-                        id: element.id,
+                        id: element.sysPropties.uid,
                         elementType: 'edge',
                         label: element.sysPropties.label
                     })
@@ -182,9 +182,9 @@ export default class WorkbenchCypherResultElementDetail extends Vue {
         let element = this.activeElement[0]
         let result: any
         if (type === 'node') {
-            result = await this.cypherStore.editNodeOrEdge({ tabValue: this.tabValue, id: element.id, elementType: 'node', graph: this.subGraphManageStore.selectedSubGraph, data: data })
+            result = await this.cypherStore.editNodeOrEdge({ tabValue: this.tabValue, id: element.sysPropties.vid, elementType: 'node', graph: this.subGraphManageStore.selectedSubGraph, data: data })
         } else if (type === 'edge') {
-            result = await this.cypherStore.editNodeOrEdge({ tabValue: this.tabValue, id: element.id, elementType: 'edge', graph: this.subGraphManageStore.selectedSubGraph, data: data })
+            result = await this.cypherStore.editNodeOrEdge({ tabValue: this.tabValue, id: element.sysPropties.uid, elementType: 'edge', graph: this.subGraphManageStore.selectedSubGraph, data: data })
         }
         if (result) {
             this.$message({

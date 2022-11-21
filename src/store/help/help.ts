@@ -66,15 +66,17 @@ export default class Help extends VuexModule {
             }
         })
         let res: any = await Promise.all(promiseList)
-        if (res && res.length) {
-            return {
-                status: 'success'
+        let status = 'success'
+        let errList = []
+        res.forEach((item) => {
+            if (item.status !== 200) {
+                status = 'faild'
+                errList.push(item.data.error_message)
             }
-        } else {
-            return {
-                status: 'faild',
-                error_messsage: res.data.error_messsage
-            }
+        })
+        return {
+            status: status,
+            errors: errList
         }
     }
 }
