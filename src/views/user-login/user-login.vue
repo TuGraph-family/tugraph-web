@@ -11,8 +11,8 @@
         </div>
         <section class="user-login-panel">
             <span class="inputHeader">{{ $t('text3') }}</span>
-            <input class="inputLogin" :placeholder="$t('text4')" v-model="userName" autofocus="autofocus" />
-            <input class="inputLogin" type="password" :placeholder="$t('text5')" v-model="password" />
+            <el-input class="inputLogin" :placeholder="$t('text4')" v-model="userName" autofocus="autofocus" />
+            <el-input class="inputLogin" show-password :placeholder="$t('text5')" v-model="password" />
             <el-button class="createButton" @click="userLogin" type="primary">{{ $t('text6') }}</el-button>
         </section>
         <div class="imgBottom"></div>
@@ -20,7 +20,7 @@
 </template>
 <script lang="ts">
 import store from '@/store/index'
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
 import { getModule } from 'vuex-module-decorators'
 import UserLoginStore from '@/store/user-login/user-login'
 import Particles from '@/components/particles/particles.vue'
@@ -31,17 +31,11 @@ import Particles from '@/components/particles/particles.vue'
 })
 export default class UserLogin extends Vue {
     userLoginStore: UserLoginStore = getModule(UserLoginStore, store)
-    get userName(): string {
-        return this.userLoginStore.userName
-    }
-    set userName(value) {
-        this.userLoginStore.updateUserName(value)
-    }
-    get password(): string {
-        return this.userLoginStore.password
-    }
-    set password(value) {
-        this.userLoginStore.updatePassword(value)
+    userName: string = ''
+    password: string = ''
+    @Watch('userName')
+    onChangeUserName() {
+        this.userLoginStore.updateUserName(this.userName)
     }
     created(): void {}
     mounted(): void {
@@ -53,7 +47,7 @@ export default class UserLogin extends Vue {
         }
     }
     async userLogin() {
-        let result = await this.userLoginStore.userLogin()
+        let result = await this.userLoginStore.userLogin({ userName: this.userName, password: this.password })
         if (result && result.status === 200) {
             let token = result.data.jwt
             let isAdmin = result.data.is_admin
@@ -63,6 +57,7 @@ export default class UserLogin extends Vue {
                 type: 'success',
                 message: '登录成功'
             })
+            localStorage.loadTime = new Date().getTime()
             document.removeEventListener('keydown', this.submit)
         } else {
             this.$message({
@@ -143,26 +138,25 @@ export default class UserLogin extends Vue {
             border-radius: 4px;
             border-radius: 4px;
             margin-bottom: 20px;
-            text-indent: 17px;
             border: none;
         }
-        input:-webkit-autofill {
-            font-size: 14px;
-            box-shadow: 0 0 0px 1000px #6c7ea8 inset;
-            -webkit-text-fill-color: #ffffff;
-        }
-        ::-webkit-input-placeholder {
-            /* WebKit browsers */
-            color: #ffffff;
-        }
-        ::-moz-placeholder {
-            /* Mozilla Firefox 19+ */
-            color: #ffffff;
-        }
-        :-ms-input-placeholder {
-            /* Internet Explorer 10+ */
-            color: #ffffff;
-        }
+        // input:-webkit-autofill {
+        //     font-size: 14px;
+        //     box-shadow: 0 0 0px 1000px #6c7ea8 inset;
+        //     -webkit-text-fill-color: #ffffff;
+        // }
+        // ::-webkit-input-placeholder {
+        //     /* WebKit browsers */
+        //     color: #ffffff;
+        // }
+        // ::-moz-placeholder {
+        //     /* Mozilla Firefox 19+ */
+        //     color: #ffffff;
+        // }
+        // :-ms-input-placeholder {
+        //     /* Internet Explorer 10+ */
+        //     color: #ffffff;
+        // }
         .createButton {
             width: 100%;
             height: 40px;

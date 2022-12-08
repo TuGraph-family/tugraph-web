@@ -217,16 +217,11 @@ function getNodeIdsByEids(params: any): { nodeIds: Array<number>; edgeIds: Array
         pathIndexList.forEach((c) => {
             if (item && item[c]) {
                 let data = JSON.parse(item[c])
-                Object.keys(data).forEach((id) => {
-                    if (id.startsWith('E[')) {
-                        let eid: any = id.replace(/(E\[)([0-9]*_[0-9]*_[0-9]*_[0-9]*)(])/g, ($1: string, $2: string, $3: string) => {
-                            return $3
-                        })
-                        if (eid) {
-                            edgeIds.push(eid + '_0') //应急5元组
-                            let n = eid.split('_')
-                            nodeIds.push(parseInt(n[0]), parseInt(n[1]))
-                        }
+                data.forEach((el: any, index: number) => {
+                    if (index % 2 === 1) {
+                        let eid = `${el.src}_${el.dst}_${el.label_id}_${el.temporal_id}_${el.identity}`
+                        edgeIds.push(eid)
+                        nodeIds.push(parseInt(el.src), parseInt(el.dst))
                     }
                 })
             }
@@ -234,9 +229,9 @@ function getNodeIdsByEids(params: any): { nodeIds: Array<number>; edgeIds: Array
         edgeIndexList.forEach((c) => {
             if (item && item[c]) {
                 let data = JSON.parse(item[c])
-                let eid = `${data.start}_${data.end}_${data.label_id}_0_${data.identity}` //应急5元组
+                let eid = `${data.src}_${data.dst}_${data.label_id}_${data.temporal_id}_${data.identity}`
                 edgeIds.push(eid)
-                nodeIds.push(parseInt(data.start), parseInt(data.end))
+                nodeIds.push(parseInt(data.src), parseInt(data.dst))
             }
         })
     })
@@ -248,7 +243,22 @@ function getNodeIdsByEids(params: any): { nodeIds: Array<number>; edgeIds: Array
 }
 
 async function querySubGraph(graph: string, nodeIds: Array<number>) {
-    return getSubGraph({ graph: graph, nodeIds: nodeIds })
+    let res = await getSubGraph({ graph: graph, nodeIds: nodeIds })
+    let graphData = JSON.parse(res.data.result[0])
+
+    graphData.nodes.forEach((item) => {
+        item.vid = item.identity
+    })
+
+    graphData.relationships.forEach((item) => {
+        item.source = item.src
+        item.destination = item.dst
+        item.uid = `${item.src}_${item.dst}_${item.label_id}_${item.temporal_id}_${item.identity}`
+    })
+    return {
+        status: res.status,
+        data: graphData
+    }
 }
 
 @Module({ name: 'Cypher' })

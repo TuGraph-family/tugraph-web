@@ -2,7 +2,7 @@
 <template>
     <div class="workbench-cypher" :class="layoutType" ref="workbenchCypher">
         <div class="workbench-cypher-input">
-            <CypherIDE :layoutType="layoutType" v-if="queryType === 'query1'"></CypherIDE>
+            <CypherIDE :layoutType="layoutType" :isShowLocalCypher.sync="isShowLocalCypher" v-if="queryType === 'query1'"></CypherIDE>
             <QuickQueryNode :layoutType="layoutType" v-if="queryType === 'query2'"></QuickQueryNode>
             <QuickQueryPath :layoutType="layoutType" v-if="queryType === 'query3'"></QuickQueryPath>
         </div>
@@ -84,6 +84,9 @@
                 <i class="el-icon-setting" slot="reference"></i>
             </el-popover>
         </div>
+        <div v-if="isShowLocalCypher" class="workbench-local-cypher">
+            <LocalCypher :isShowLocalCypher.sync="isShowLocalCypher" />
+        </div>
     </div>
 </template>
 <script lang="ts">
@@ -93,6 +96,7 @@ import { getModule } from 'vuex-module-decorators'
 import CypherIDE from './cypher-ide/cypher-ide.vue'
 import QuickQueryNode from './quick-query-node/quick-query-node.vue'
 import QuickQueryPath from './quick-query-path/quick-query-path.vue'
+import LocalCypher from '@/components/local-cypher/local-cypher.vue'
 import CypherResult from './cypher-result/cypher-result.vue'
 import CypherStore from '@/store/cypher/cypher'
 import Loading from '@/components/loading/loading.vue'
@@ -106,7 +110,8 @@ import { copyToClipboardAsync } from '@/core/uitls'
         CypherResult,
         Loading,
         QuickQueryNode,
-        QuickQueryPath
+        QuickQueryPath,
+        LocalCypher
     }
 })
 export default class WorkbenchCypher extends Vue {
@@ -117,6 +122,7 @@ export default class WorkbenchCypher extends Vue {
     createLabelStore: CreateLabelStore = getModule(CreateLabelStore, store)
     subGraphManageStore: SubGraphManageStore = getModule(SubGraphManageStore, store)
     isMax: boolean = false
+    isShowLocalCypher: boolean = false
     layoutType: string = 'layout1'
     showSetPanel: boolean = false
     queryType: string = 'query1'
@@ -344,7 +350,15 @@ export default class WorkbenchCypher extends Vue {
             color: #4b4d74;
         }
     }
-
+    .workbench-local-cypher {
+        position: absolute;
+        right: 0;
+        width: 500px;
+        height: 100%;
+        z-index: 3;
+        background-color: #fff;
+        border-left: 1px solid #ccc;
+    }
     &.layout1 {
         flex-direction: column;
     }

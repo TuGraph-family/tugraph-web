@@ -41,7 +41,8 @@ import {
     ColorPicker,
     Slider,
     Checkbox,
-    CheckboxGroup
+    CheckboxGroup,
+    Notification
 } from 'element-ui'
 Vue.config.productionTip = false
 Vue.use(Contextmenu)
@@ -82,6 +83,8 @@ Vue.use(CheckboxGroup)
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
 Vue.prototype.$alert = MessageBox.alert
+Vue.prototype.$notify = Notification
+
 Vue.prototype.$cyEvents = {}
 
 Vue.config.devtools = true
@@ -91,7 +94,10 @@ Vue.prototype.$interval.start()
 import enLang from 'element-ui/lib/locale/lang/en'
 import zhLang from 'element-ui/lib/locale/lang/zh-CN'
 import locale from 'element-ui/lib/locale'
+
+import { refreshToken } from '@/service/user-login/user-login'
 Vue.use(VueI18n)
+
 const i18n = new VueI18n({
     locale: store.state.language,
     messages: {
@@ -99,7 +105,27 @@ const i18n = new VueI18n({
         zh: { ...zhLang }
     }
 })
+let intervalTaskId = Vue.prototype.$interval.registTask({
+    time: 1,
+    fun: async () => {
+        let loadTime = localStorage.loadTime || 0
+        let currentTime = new Date().getTime()
+        if (currentTime - loadTime > 50 * 60 * 1000) {
+            localStorage.loadTime = currentTime
+            let token = sessionStorage.__FMA_TOKEN__
+            if (token) {
+                sessionStorage.__FMA_TOKEN__ = ''
+                let res = await refreshToken({ jwt: token })
+                if (res && res.status === 200) {
+                    sessionStorage.__FMA_TOKEN__ = 'Bearer ' + res.data.jwt
+                }
+            }
+        }
+    }
+})
+
 locale.i18n((key, value) => i18n.t(key, value))
+
 new Vue({
     router,
     store,

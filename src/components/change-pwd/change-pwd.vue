@@ -38,9 +38,6 @@ export default class ChangePwd extends Vue {
     oldPassword: string = ''
     newPassword: string = ''
     newPassword2: string = ''
-    get userPassword() {
-        return this.userLoginStore.password
-    }
     get userName() {
         return this.userLoginStore.userName
     }
@@ -48,13 +45,13 @@ export default class ChangePwd extends Vue {
         return this.userLoginStore.isAdmin
     }
     async changePassword() {
-        if (this.userPassword.toString() !== this.oldPassword.toString()) {
-            this.$message({
-                message: '原密码错误',
-                type: 'error'
-            })
-            return
-        }
+        // if (this.userPassword.toString() !== this.oldPassword.toString()) {
+        //     this.$message({
+        //         message: '原密码错误',
+        //         type: 'error'
+        //     })
+        //     return
+        // }
         if (this.newPassword !== this.newPassword2) {
             this.$message({
                 message: '两次输入的密码不相同',

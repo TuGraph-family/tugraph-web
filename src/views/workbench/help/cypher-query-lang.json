@@ -24,7 +24,13 @@
         "t22": "Next, we create an edge. First select the model of the edge, click to add an edge, then click the cell at the starting point, then click the vertex on the graph, the virtual id of the vertex is automatically filled in the table, and then click the cell at the end point , Click another vertex on the graph, the virtual id of the other vertex will be automatically filled in the table, click save, an edge will be created successfully.",
         "t23": "The start and end points of an edge cannot be modified, other attributes can be modified.",
         "t24": "Then delete this edge, select this edge in the table, click Delete, and the deletion is successful.",
-        "t25": "Finally, to delete these two vertices, first select the model of these two points, select these two points in the table, click delete, and the deletion is successful. (Delete two related points, their edges will be deleted automatically)"
+        "t25": "Finally, to delete these two vertices, first select the model of these two points, select these two points in the table, click delete, and the deletion is successful. (Delete two related points, their edges will be deleted automatically)",
+        "t26": "Movie Demo",
+        "t27": "Covid Demo",
+        "t28": "Check the confirmed personnel '焦明 '",
+        "t29": "Close contacts of the confirmed personnel '焦明' ",
+        "t30": "To inquire about the place visited by '张红', the person in close contact with '焦明' ",
+        "t31": "Query all persons who have been to '赵路Y座 424857'"
     },
     "zh": {
         "t1": "查询",
@@ -51,6 +57,12 @@
         "t22": "接下来我们创建一条边，首先选择边的模型，点击添加边，然后点击起点的单元格，再点一下图上的顶点，顶点的虚拟id就自动填入表格中了，再点击终点的单元格，点击图上的另一个顶点，另一个顶点的虚拟id就自动填入表格中了，点击保存，一条边就创建成功了。",
         "t23": "边的起点和终点是不可以修改的，其他属性可以修改。",
         "t24": "然后删除这条边，在表格中选中这条边，点击删除，删除成功。",
-        "t25": "最后删除这两个顶点，先要选择这两个点的模型，在表格中选中这两个点，点击删除，删除成功。（删除两个有关系的点，他们的边会自动删除）"
+        "t25": "最后删除这两个顶点，先要选择这两个点的模型，在表格中选中这两个点，点击删除，删除成功。（删除两个有关系的点，他们的边会自动删除）",
+        "t26": "Movie 示例语句",
+        "t27": "Covid 示例语句",
+        "t28": "查询确诊人员'焦明'",
+        "t29": "查询确诊人员'焦明'的密切接触人员",
+        "t30": "查询与'焦明'密接的人员'张红'所去过的地方",
+        "t31": "查询所有去过'赵路Y座 424857'的人员"
     }
 }

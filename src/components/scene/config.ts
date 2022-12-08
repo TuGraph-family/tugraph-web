@@ -17,6 +17,7 @@ const Demos = [
                 'has_genre_rels',
                 'produced_rels',
                 'ratings',
+                'has_keyword_rels',
                 'writer_of_rels'
             ]
             let dirName = 'movie'

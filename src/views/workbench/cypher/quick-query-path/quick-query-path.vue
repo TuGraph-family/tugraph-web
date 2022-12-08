@@ -200,16 +200,19 @@ export default class QuickQueryPath extends Vue {
         this.pathLabelsConfig = data
     }
     created() {
-        let timer: number = 0
+        let intervalTaskId
         if (this.nodeLabels.length > 0 && this.edgeLabels.length) {
             this.getPathList()
         } else {
-            timer = setInterval(() => {
-                this.getPathList()
-                if (this.nodeLabels.length > 0 && this.edgeLabels.length) {
-                    clearInterval(timer)
+            intervalTaskId = this.$interval.registTask({
+                time: 2,
+                fun: () => {
+                    this.getPathList()
+                    if (this.nodeLabels.length > 0 && this.edgeLabels.length) {
+                        this.$interval.deleteTask(intervalTaskId)
+                    }
                 }
-            }, 2000)
+            })
         }
     }
     mounted() {}
@@ -274,6 +277,7 @@ export default class QuickQueryPath extends Vue {
     padding: 16px 14px;
     color: #666666;
     font-size: 14px;
+    z-index: 4;
     .no-select {
         margin-top: 47px;
         text-align: center;

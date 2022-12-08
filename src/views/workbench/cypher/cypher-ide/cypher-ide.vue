@@ -5,9 +5,31 @@
         </div>
         <div class="workbench-cypher-btns">
             <el-tooltip content="Ctrl + Enter" placement="left">
-                <div class="btn-run" @click="getCypher"></div>
+                <div class="btn btn-run" @click="getCypher"></div>
+            </el-tooltip>
+            <el-tooltip content="Save Cypher" placement="left">
+                <div class="btn btn-save" @click="saveCypher"></div>
+            </el-tooltip>
+            <el-tooltip content="Open Favorites" placement="left">
+                <div class="btn btn-dir" @click="showLocalCypher"></div>
             </el-tooltip>
         </div>
+        <el-dialog :visible.sync="dialogVisible" title="保存Cypher语句">
+            <section class="local-cypher-dialog-body">
+                <div>名称：</div>
+                <div>
+                    <el-input size="small" v-model="saveObj.name"></el-input>
+                </div>
+                <div>备注：</div>
+                <div>
+                    <el-input type="textarea" v-model="saveObj.ps" maxlength="50" show-word-limit></el-input>
+                </div>
+            </section>
+            <section class="local-cypher-dialog-btns">
+                <el-button size="mini" type="primary" @click="save">保存</el-button>
+                <el-button size="mini" @click="dialogVisible = false">取消</el-button>
+            </section>
+        </el-dialog>
     </div>
 </template>
 <script lang="ts">
@@ -29,8 +51,9 @@ export default class WorkbenchCypherIde extends Vue {
     @Prop(String) layoutType!: ''
     cypherStore: CypherStore = getModule(CypherStore, store)
     subGraphManageStore: SubGraphManageStore = getModule(SubGraphManageStore, store)
-
     query: boolean = false
+    dialogVisible: boolean = false
+    saveObj: { name: string; ps: string; value: string } = { name: '', ps: '', value: '' }
     variablePool: any = {
         keyWords: [
             'CREATE',
@@ -84,7 +107,6 @@ export default class WorkbenchCypherIde extends Vue {
         autoCloseBrackets: true,
         hintOptions: { hint: this.handleShowHint, completeSingle: false }
     }
-    created() {}
     mounted() {
         let dom = this.$refs['cypherCodeMirror']
         this.cypherCodeMirror = CodeMirror.fromTextArea(dom, this.cypherCodeMirrorConfig)
@@ -130,7 +152,8 @@ export default class WorkbenchCypherIde extends Vue {
             this.cypherStore.upDateCurrentCypher(cypher)
             let id = new Date().getTime() + ''
             this.cypherStore.tabAdd({ id: id, graph: this.subGraphManageStore.selectedSubGraph })
-            await this.cypherStore.queryByCypher({ graph: this.subGraphManageStore.selectedSubGraph, script: cypher, tabValue: id })
+            let res = await this.cypherStore.queryByCypher({ graph: this.subGraphManageStore.selectedSubGraph, script: cypher, tabValue: id })
+            console.log(res)
             this.query = false
         }
     }
@@ -138,6 +161,49 @@ export default class WorkbenchCypherIde extends Vue {
         if (e.ctrlKey && e.key === 'Enter') {
             this.getCypher()
         }
+    }
+    showLocalCypher() {
+        this.$emit('update:isShowLocalCypher', true)
+    }
+    saveCypher() {
+        let localCypherList
+        if (localStorage.LOCALCYPHERLIST) {
+            localCypherList = JSON.parse(localStorage.LOCALCYPHERLIST)
+        } else {
+            localCypherList = []
+        }
+        let n = localCypherList.length + 1
+        this.saveObj = {
+            name: '收藏Cypher语句 ' + n,
+            ps: '收藏Cypher语句 ' + n + ' 的备注',
+            value: this.cypherCodeMirror.getValue()
+        }
+        this.dialogVisible = true
+    }
+    save() {
+        let localCypherList
+        if (localStorage.LOCALCYPHERLIST) {
+            localCypherList = JSON.parse(localStorage.LOCALCYPHERLIST)
+        } else {
+            localCypherList = []
+        }
+        if (!this.saveObj.name) {
+            this.$message({
+                message: '收藏语句名称不能为空',
+                type: 'warning'
+            })
+        }
+        let has = localCypherList.find((item) => item.name === this.saveObj.name)
+        if (has) {
+            this.$message({
+                message: '收藏语句名称重复',
+                type: 'warning'
+            })
+            return
+        }
+        localCypherList.push(this.saveObj)
+        localStorage.LOCALCYPHERLIST = JSON.stringify(localCypherList)
+        this.dialogVisible = false
     }
 }
 </script>
@@ -154,6 +220,9 @@ export default class WorkbenchCypherIde extends Vue {
         flex-direction: row;
         .workbench-cypher-btns {
             padding-left: 11px;
+            > .btn {
+                margin-bottom: 12px;
+            }
         }
     }
     &.layout2,
@@ -161,6 +230,10 @@ export default class WorkbenchCypherIde extends Vue {
         flex-direction: column;
         .workbench-cypher-btns {
             padding-top: 11px;
+            display: flex;
+            > .btn {
+                margin-right: 12px;
+            }
         }
     }
     .workbench-cypher-textarea {
@@ -171,14 +244,61 @@ export default class WorkbenchCypherIde extends Vue {
         // max-width: calc(100% - 50px);
     }
     .workbench-cypher-btns {
-        .btn-run {
+        > .btn {
             cursor: pointer;
-            width: 36px;
-            height: 36px;
-            background: url('../../../../assets/cypher-ide/run-normal.png') no-repeat center;
-            &:hover {
-                background: url('../../../../assets/cypher-ide/run-hover.png') no-repeat center;
-            }
+            width: 40px;
+            height: 40px;
+            background-color: #5c71c0;
+            border-radius: 5px;
+            background-size: 35px;
+            background-repeat: no-repeat;
+            background-position: center;
+            padding: 5px;
+        }
+        .btn-run {
+            background-image: url('../../../../assets/cypher-ide/run.png');
+        }
+        .btn-save {
+            background-image: url('../../../../assets/cypher-ide/save.png');
+        }
+        .btn-dir {
+            background-image: url('../../../../assets/cypher-ide/dir.png');
+        }
+    }
+    /deep/ .el-dialog {
+        width: 440px;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 0 16px;
+    }
+    /deep/ .el-dialog__header {
+        padding-top: 0;
+        padding-left: 0;
+        height: 63px;
+        line-height: 63px;
+        font-family: PingFangSC-Regular;
+        font-size: 20px;
+        color: #44527c;
+        height: 63px;
+        line-height: 63px;
+        border-bottom: 1px solid #e6e6e6;
+    }
+    /deep/ .el-dialog__headerbtn {
+        font-size: 20px;
+    }
+    /deep/ .el-dialog__body {
+        padding: 0;
+    }
+    .local-cypher-dialog-btns {
+        margin: 20px 0;
+        white-space: nowrap;
+        text-align: right;
+    }
+
+    .local-cypher-dialog-body {
+        > div {
+            margin: 5px 0;
         }
     }
 

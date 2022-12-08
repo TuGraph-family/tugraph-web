@@ -67,9 +67,9 @@ export default class ControlBoard extends Vue {
         this.showUserLogoutPanel = false
         this.showChagePwd = true
     }
-    logout() {
-        this.userLoginStore.userLogout()
-        this.$router.push({ name: 'UserLogin' })
+    async logout() {
+        let res = await this.userLoginStore.userLogout()
+        location.href = location.origin + '#/login'
     }
     changeLang(lang: string) {
         this.$i18n.locale = lang

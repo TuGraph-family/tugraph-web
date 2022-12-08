@@ -384,9 +384,7 @@ export default class Authority extends Vue {
     get currentUserName() {
         return this.userLoginStore.userName
     }
-    get currentUserPwd() {
-        return this.userLoginStore.password
-    }
+
     created() {
         this.accountListStore.getUserList(this.currentUserName)
         this.roleListStore.getRoleList()

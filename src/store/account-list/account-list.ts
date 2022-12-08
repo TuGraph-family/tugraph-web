@@ -55,6 +55,9 @@ export default class AccountList extends VuexModule {
     @Action
     async changeUserPwd(params: { name: string; oldPassword?: string; newPassword?: string; isAdmin: boolean }) {
         let result = await changeUserPwd(params)
+        if (params.name === 'admin') {
+            localStorage.ISORIGINALPWD = 'fixed'
+        }
         return result
     }
     @Action

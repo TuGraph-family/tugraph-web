@@ -1,17 +1,19 @@
+
 /* Copyright (c) 2022 AntGroup. All Rights Reserved. */
 
+/*
+ * Returns the number of vertices in the k-th layer
+ * according to the given vertex.
+ */
 #include <iostream>
 #include <vector>
 #include <unordered_set>
 
 #include "lgraph/lgraph.h"
-#include "lgraph/lgraph_olap.h"
 #include "lgraph/lgraph_traversal.h"
-
-#include "./json.hpp"
+#include "tools/json.hpp"
 
 using json = nlohmann::json;
-
 using namespace lgraph_api;
 
 class UnorderedParallelBitset {
@@ -46,8 +48,8 @@ class UnorderedParallelBitset {
             std::shared_ptr<olap::ParallelBitset> ptr_(
                 new olap::ParallelBitset(parallel_bitset_size_));
             parallel_bitset_visited_ = ptr_;
-            for (auto iter = unordered_set_visited_.begin();
-                 iter != unordered_set_visited_.end(); ++iter) {
+            for (auto iter = unordered_set_visited_.begin(); iter != unordered_set_visited_.end();
+                 ++iter) {
                 parallel_bitset_visited_->Add(*iter);
             }
         }
@@ -70,20 +72,32 @@ class UnorderedParallelBitset {
     }
 };
 
-extern "C" bool Process(GraphDB & db, const std::string & request, std::string & response) {
-    int64_t root;
-    size_t depth;
-    std::string label;
-    std::string field;
+extern "C" bool Process(GraphDB& db, const std::string& request, std::string& response) {
+    double start_time;
+
+    // prepare
+    start_time = get_time();
+    int64_t root = 0;
+    size_t depth = 3;
+    std::string label = "node";
+    std::string field = "id";
     size_t threshold_size = 10000;
     bool has_duplicate_edge = false;
     bool multi_threads = true;
     try {
         json input = json::parse(request);
-        root = input["root"].get<int64_t>();
-        depth = input["depth"].get<size_t>();
-        label = input["label"].get<std::string>();
-        field = input["field"].get<std::string>();
+        if (input["root"].is_number()) {
+            root = input["root"].get<int64_t>();
+        }
+        if (input["depth"].is_number()) {
+            depth = input["depth"].get<int64_t>();
+        }
+        if (input["label"].is_string()) {
+            label = input["label"].get<std::string>();
+        }
+        if (input["field"].is_string()) {
+            field = input["field"].get<std::string>();
+        }
         if (input["threshold_size"].is_number()) {
             threshold_size = input["threshold_size"].get<size_t>();
         }
@@ -93,7 +107,7 @@ extern "C" bool Process(GraphDB & db, const std::string & request, std::string &
         if (input["multi_threads"].is_boolean()) {
             multi_threads = input["multi_threads"].get<bool>();
         }
-    } catch (std::exception & e) {
+    } catch (std::exception& e) {
         std::cout << e.what() << std::endl;
         std::cout << "request: " << request << std::endl;
         throw std::runtime_error(e.what());
@@ -103,11 +117,23 @@ extern "C" bool Process(GraphDB & db, const std::string & request, std::string &
     auto txn = db.CreateReadTxn();
     size_t vertex_label_id = txn.GetVertexLabelId(label);
     size_t vertex_field_id = txn.GetVertexFieldId(vertex_label_id, field);
-    int64_t vertex_id = txn.GetIndexIterator(vertex_label_id,
-                                             vertex_field_id,
-                                             FieldData(root),
-                                             FieldData(root)).GetVid();
 
+    auto root_iter =
+        txn.GetVertexIndexIterator(vertex_label_id,
+                vertex_field_id, FieldData(root), FieldData(root));
+    int64_t vertex_id;
+    if (root_iter.IsValid()) {
+        vertex_id = root_iter.GetVid();
+    } else {
+        json output;
+        output["size"] = 0;
+        response = output.dump();
+        return true;
+    }
+    auto prepare_cost = get_time() - start_time;
+
+    // core
+    start_time = get_time();
     if (multi_threads) {
         auto frontierTraversal = traversal::FrontierTraversal(db, txn, 1);
         frontierTraversal.SetFrontier(vertex_id);
@@ -129,8 +155,8 @@ extern "C" bool Process(GraphDB & db, const std::string & request, std::string &
                 vit.Goto(vid);
                 for (auto eit = vit.GetOutEdgeIterator(); eit.IsValid(); eit.Next()) {
                     int64_t dst = eit.GetDst();
-                    if ((i == 0 && !has_duplicate_edge)
-                        || (!visited.Has(dst) && visited.Add(dst))) {
+                    if ((i == 0 && !has_duplicate_edge) ||
+                        (!visited.Has(dst) && visited.Add(dst))) {
                         dst_vertexs.push_back(dst);
                     }
                 }
@@ -141,8 +167,14 @@ extern "C" bool Process(GraphDB & db, const std::string & request, std::string &
         }
         size = src_vertexs.size();
     }
+    auto core_cost = get_time() - start_time;
+
     json output;
     output["size"] = size;
+    output["prepare_cost"] = prepare_cost;
+    output["core_cost"] = core_cost;
+    output["total_cost"] = prepare_cost + core_cost;
     response = output.dump();
     return true;
 }
+

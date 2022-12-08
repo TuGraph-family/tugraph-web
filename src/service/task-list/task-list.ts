@@ -7,7 +7,7 @@ interface options {
 export function getTaskList() {
     let options: options = {
         headers: {
-            Authorization: localStorage.__FMA_TOKEN__
+            Authorization: sessionStorage.__FMA_TOKEN__
         }
     }
     return http.get('/task', {}, options)
@@ -16,7 +16,7 @@ export function getTaskList() {
 export function killTask(params) {
     let options: options = {
         headers: {
-            Authorization: localStorage.__FMA_TOKEN__
+            Authorization: sessionStorage.__FMA_TOKEN__
         }
     }
     let url = `/task/${params.task_id}`
