@@ -10,19 +10,30 @@ interface user {
     }
 }
 async function cypherScript(params: { graph: string; scripts: Array<any> }) {
-    let promiseList = []
-    params.scripts.forEach((item) => {
-        promiseList.push(queryByCypher({ graph: params.graph, script: item }))
-    })
-    let res: any = await Promise.all(promiseList)
-    if (res && res.length) {
+    // let promiseList = []
+    // params.scripts.forEach((item) => {
+    //     promiseList.push()
+    // })
+    // let res: any = await Promise.all(promiseList)
+    let n: number = params.scripts.length
+    let status: string = 'success'
+    let res
+    for (let i = 0; i < n; i++) {
+        res = await queryByCypher({ graph: params.graph, script: params.scripts[i] })
+        if (res.status !== 200) {
+            status = 'error'
+            break
+        }
+    }
+    console.log(res.data)
+    if (status === 'success') {
         return {
             status: 'success'
         }
     } else {
         return {
             status: 'faild',
-            error_messsage: res.data.error_messsage
+            error_messsage: res.data.error_message
         }
     }
 }
