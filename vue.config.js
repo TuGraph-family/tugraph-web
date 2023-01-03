@@ -1,8 +1,10 @@
 const path = require('path')
 const os = require('os')
-// console.log(process.env)
+
+let dir = process.env.DIR
+console.log(dir)
 module.exports = {
-    publicPath: process.env.NODE_ENV === 'production' ? '/resource/' : '/',
+    publicPath: dir,
     productionSourceMap: false,
     devServer: {
         proxy: process.env.VUE_APP_REQUESTURL

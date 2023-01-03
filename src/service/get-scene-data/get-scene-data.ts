@@ -8,7 +8,7 @@ export function getSceneData(params: { dirName: string; fileName: string; last: 
     let api_url = `${baseUrl}scene_data/${params.dirName}/${params.fileName}.${params.last}`
     let options: options = {
         headers: {
-            Authorization: localStorage.__FMA_TOKEN__
+            Authorization: sessionStorage.__FMA_TOKEN__
         }
     }
     return http.get(api_url, {}, options)

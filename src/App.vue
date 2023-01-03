@@ -6,18 +6,38 @@
         <keep-alive>
             <router-view v-if="$route.meta.keepAlive && $route.name === 'Plugin'"></router-view>
         </keep-alive>
-
-        <!-- 不需要被缓存的路由入口 -->
         <router-view v-if="!$route.meta.keepAlive"></router-view>
     </div>
 </template>
 
 <script lang="ts">
+import store from '@/store/index'
 import { Component, Vue } from 'vue-property-decorator'
-export default class App extends Vue {}
+import { getModule } from 'vuex-module-decorators'
+import UserLoginStore from '@/store/user-login/user-login'
+@Component
+export default class App extends Vue {
+    userLoginStore: UserLoginStore = getModule(UserLoginStore, store)
+    isOriginalPWD: boolean = true
+    get userName() {
+        return this.userLoginStore.userName
+    }
+    created() {
+        let ISORIGINALPWD = localStorage.ISORIGINALPWD
+        console.log(this.userName)
+        if (ISORIGINALPWD !== 'fixed' && this.userName === 'admin') {
+            this.$notify({
+                title: '提示',
+                message: '为了您的数据安全，请修改admin的初始密码！',
+                type: 'warning',
+                duration: 0
+            })
+        }
+    }
+}
 </script>
 
-<style lang="less">
+<style lang="less" scope>
 html,
 body {
     margin: 0;
@@ -37,5 +57,12 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
+    .warn {
+        position: absolute;
+        z-index: 10;
+        background: red;
+        top: 0;
+        right: 0;
+    }
 }
 </style>

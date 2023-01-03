@@ -1,11 +1,12 @@
 {
     "name": "tugraph-browser",
-    "version": "3.3.1",
+    "version": "3.3.3",
     "private": true,
     "scripts": {
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
         "lint": "vue-cli-service lint",
+        "relative": "vue-cli-service build --mode relative",
         "dev": "vue-cli-service serve --mode development",
         "home": "vue-cli-service serve --mode home",
         "fix-memory-limit": "cross-env LIMIT=4096 increase-memory-limit",
@@ -13,7 +14,7 @@
     },
     "dependencies": {
         "@types/cytoscape": "^3.14.8",
-        "axios": "^0.21.1",
+        "axios": "^0.21.4",
         "codemirror": "^5.58.1",
         "core-js": "^3.6.5",
         "cross-env": "^7.0.3",

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Vue from 'vue'
+import router from '../router/index'
 let baseUrl = '/'
 
 interface params {
@@ -17,7 +18,8 @@ function prepareParams(params: params): params {
             newParams[key] = params[key]
         }
     }
-    return params
+
+    return newParams
 }
 //   请求成功
 const onSuccess = function(response: params): params {
@@ -25,17 +27,18 @@ const onSuccess = function(response: params): params {
 }
 //   请求失败
 const onError = function(error: params): params {
-    console.log(error.response)
-    // if (error.response.status === 500) {
-    //     Vue.prototype.$message({
-    //         message: error.response.statusText,
-    //         type: 'error'
-    //     })
-    //     return
-    // }
+    // console.log(error.response)
+    if (error.response && error.response.status === 401) {
+        router.push({ name: 'UserLogin' })
+        sessionStorage.__FMA_TOKEN__ = ''
+        // sessionStorage.__FMA_USERINFO__ = ''
+    }
     return error.response
 }
 
+function sleep(time) {
+    return new Promise((resolve) => setTimeout(resolve, time))
+}
 class HttpClient {
     private httpClient: any
     public constructor() {
@@ -44,19 +47,28 @@ class HttpClient {
             withCredentials: false
         })
         //   添加请求拦截器
-        axios.interceptors.request.use(
-            (config) => {
-                //   在发送请求之前做些什么
-                return config
+        httpClient.interceptors.request.use(
+            async (config) => {
+                // 在发送请求之前做些什么
+                // 如果请求时候，与刷新token发生碰撞，进行3秒延迟
+                if (!config.headers.Authorization && config.url !== '/login' && config.url !== '/refresh') {
+                    await sleep(3000)
+                    console.log(sessionStorage.__FMA_TOKEN__)
+                    config.headers.Authorization = sessionStorage.__FMA_TOKEN__
+                    return config
+                } else {
+                    return config
+                }
             },
             function(error) {
                 //   对请求错误做些什么
+                console.log(error)
                 return Promise.reject(error)
             }
         )
 
         //   添加响应拦截器
-        axios.interceptors.response.use(
+        httpClient.interceptors.response.use(
             (response) => {
                 //   对响应数据做点什么
                 return response

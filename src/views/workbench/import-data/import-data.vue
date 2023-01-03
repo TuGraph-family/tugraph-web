@@ -118,28 +118,12 @@
                                         <el-select clearable size="mini" v-model="mapModalData.srcLabelName" @change="changePointLabel(scope)">
                                             <el-option v-for="l in allLabel.filter((item) => item.type === 'node')" :key="l.name" :value="l.name" :label="l.name"></el-option>
                                         </el-select>
-                                        <!-- <el-select clearable v-if="mapModalData.srcLabelName" size="mini" v-model="mapModalData.srcLabelProp">
-                                            <el-option
-                                                v-for="(l, i) in allLabel.find((p) => p.type === 'node' && p.name === mapModalData.srcLabelName).props"
-                                                :key="i"
-                                                :value="i"
-                                                :label="i"
-                                            ></el-option>
-                                        </el-select> -->
                                     </div>
                                     <div class="dst" v-else-if="index === mapModalData.dstCol - 1 && mapModalData.targetlabel.type === 'edge'">
                                         {{ $t('text31') }}
                                         <el-select clearable size="mini" v-model="mapModalData.dstLabelName" @change="changePointLabel(scope)">
                                             <el-option v-for="l in allLabel.filter((item) => item.type === 'node')" :key="l.name" :value="l.name" :label="l.name"></el-option>
                                         </el-select>
-                                        <!-- <el-select clearable v-if="mapModalData.dstLabelName" size="mini" v-model="mapModalData.dstLabelProp">
-                                            <el-option
-                                                v-for="(l, i) in allLabel.find((p) => p.type === 'node' && p.name === mapModalData.dstLabelName).props"
-                                                :key="i"
-                                                :value="i"
-                                                :label="i"
-                                            ></el-option>
-                                        </el-select> -->
                                     </div>
                                     <div v-else>
                                         <el-select clearable size="mini" v-model="item.propName" @change="changeColProp(scope)">
@@ -422,7 +406,7 @@ export default class importData extends Vue {
                 // console.log(new TextDecoder(this.fileDecode).decode(rowData.importDataBuffer[i].data))
                 let params = {
                     graph: rowData.graphName,
-                    data: { description: rowData.description, data: new TextDecoder(this.fileDecode).decode(rowData.importDataBuffer[i].data), continue_on_error: false, delimiter: ',' }
+                    data: { description: rowData.description, data: new TextDecoder(this.fileDecode).decode(rowData.importDataBuffer[i].data), continue_on_error: true, delimiter: ',' }
                 }
                 if (i > 0) {
                     rowData.description.files[0] && (rowData.description.files[0].header = 0)

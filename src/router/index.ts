@@ -116,8 +116,10 @@ const router = new VueRouter({
     base: process.env.BASE_URL,
     routes
 })
+
 router.beforeEach((to, from, next) => {
-    const token = localStorage.__FMA_TOKEN__
+    const token = sessionStorage.__FMA_TOKEN__
+
     if (!token && to.name !== 'UserLogin') {
         next({ name: 'UserLogin' })
     } else {

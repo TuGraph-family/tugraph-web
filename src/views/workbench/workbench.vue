@@ -85,9 +85,9 @@ export default class Workbench extends Vue {
         this.showUserLogoutPanel = false
         this.showChagePwd = true
     }
-    logout() {
-        this.userLoginStore.userLogout()
-        this.$router.push({ name: 'UserLogin' })
+    async logout() {
+        let res = await this.userLoginStore.userLogout()
+        location.href = location.origin + '#/login'
     }
     changeLang(lang: string) {
         this.$store.commit('changeLanguage', { vue: this, lang: lang })
