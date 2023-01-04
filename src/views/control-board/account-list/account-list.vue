@@ -184,7 +184,7 @@ export default class AccountList extends Vue {
     }
     created() {
         this.accountListStore.getUserList(this.currentUserName)
-        this.roleListStore.getRoleList()
+        this.roleListStore.getRoleList(this.currentUserName)
     }
     rowClassName(row: any) {
         if (row.rowIndex === 0) {

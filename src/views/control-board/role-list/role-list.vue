@@ -124,7 +124,7 @@ export default class RoleList extends Vue {
     addRoleName: string = ''
     addRoleDesc: string = ''
     created() {
-        this.roleListStore.getRoleList()
+        this.roleListStore.getRoleList(this.currentUserName)
     }
     get currentUserName() {
         return this.userLoginStore.userName
@@ -175,7 +175,7 @@ export default class RoleList extends Vue {
                 type: 'error'
             })
         }
-        this.roleListStore.getRoleList()
+        this.roleListStore.getRoleList(this.currentUserName)
         this.cancelAddRole()
     }
     cancelAddRole() {
@@ -213,7 +213,7 @@ export default class RoleList extends Vue {
                         this.$router.push({ name: 'UserLogin' })
                         return
                     }
-                    this.roleListStore.getRoleList()
+                    this.roleListStore.getRoleList(this.currentUserName)
                 }
             })
             .catch(() => {
@@ -248,7 +248,7 @@ export default class RoleList extends Vue {
                 type: 'error'
             })
         }
-        this.roleListStore.getRoleList()
+        this.roleListStore.getRoleList(this.currentUserName)
     }
     async saveChangeGraphRight() {
         let permissions: any = {}
@@ -267,7 +267,7 @@ export default class RoleList extends Vue {
                 type: 'error'
             })
         }
-        this.roleListStore.getRoleList()
+        this.roleListStore.getRoleList(this.currentUserName)
         this.closeChangeGraphRightDig()
     }
 }

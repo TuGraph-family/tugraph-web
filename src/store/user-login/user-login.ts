@@ -6,21 +6,20 @@ function decode(data: string, is_admin: boolean, userName: string) {
         user: userName,
         is_admin
     }
-    sessionStorage.__FMA_USERINFO__ = JSON.stringify(user_info)
+    localStorage.__FMA_USERINFO__ = JSON.stringify(user_info)
 }
 
 @Module({ name: 'UserLogin' })
 export default class UserLogin extends VuexModule {
-    userName: string = sessionStorage.__FMA_USERINFO__ ? JSON.parse(sessionStorage.__FMA_USERINFO__).user : ''
-    // password: string = sessionStorage.__FMA_USERINFO__ ? JSON.parse(sessionStorage.__FMA_USERINFO__).password : ''
-    token: string = sessionStorage.__FMA_TOKEN__ || ''
-    isAdmin: boolean = sessionStorage.__FMA_USERINFO__ ? JSON.parse(sessionStorage.__FMA_USERINFO__).is_admin : ''
+    userName: string = localStorage.__FMA_USERINFO__ ? JSON.parse(localStorage.__FMA_USERINFO__).user : ''
+    // password: string = localStorage.__FMA_USERINFO__ ? JSON.parse(localStorage.__FMA_USERINFO__).password : ''
+    token: string = localStorage.__FMA_TOKEN__ || ''
+    isAdmin: boolean = localStorage.__FMA_USERINFO__ ? JSON.parse(localStorage.__FMA_USERINFO__).is_admin : ''
     @Mutation
     updateToken(params: { token: string; isAdmin: boolean }): void {
         this.token = 'Bearer ' + params.token
         this.isAdmin = params.isAdmin
-        sessionStorage.__FMA_TOKEN__ = this.token
-        console.log(1)
+        localStorage.__FMA_TOKEN__ = this.token
         decode(params.token, params.isAdmin, this.userName)
     }
     @Mutation
@@ -38,10 +37,9 @@ export default class UserLogin extends VuexModule {
     }
     @Action
     async userLogout() {
-        let res = await logout({ jwt: sessionStorage.__FMA_TOKEN__ })
-        console.log(res)
-        sessionStorage.__FMA_USERINFO__ = ''
-        sessionStorage.__FMA_TOKEN__ = ''
+        let res = await logout({ jwt: localStorage.__FMA_TOKEN__ })
+        localStorage.__FMA_USERINFO__ = ''
+        localStorage.__FMA_TOKEN__ = ''
         return res
     }
 }

@@ -22,6 +22,7 @@ export default class App extends Vue {
     get userName() {
         return this.userLoginStore.userName
     }
+
     created() {
         let ISORIGINALPWD = localStorage.ISORIGINALPWD
         console.log(this.userName)

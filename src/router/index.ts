@@ -118,12 +118,13 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    const token = sessionStorage.__FMA_TOKEN__
-
-    if (!token && to.name !== 'UserLogin') {
-        next({ name: 'UserLogin' })
-    } else {
-        next()
-    }
+    setTimeout(() => {
+        const token = localStorage.__FMA_TOKEN__
+        if (!token && to.name !== 'UserLogin') {
+            next({ name: 'UserLogin' })
+        } else {
+            next()
+        }
+    }, 300)
 })
 export default router

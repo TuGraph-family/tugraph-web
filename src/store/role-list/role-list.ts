@@ -1,6 +1,7 @@
 import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators'
 import { getRoleList, setRolePermissions, setRoleDescription, delRole, enableOrDisableRole, addRole } from '@/service/role-list/role-list'
 import { getAllSubGraph } from '@/service/subgraph-manage/subgraph-manage'
+import { getUserGraph } from '@/service/account-list/account-list'
 @Module({ name: 'RoleList', namespaced: true })
 export default class RoleList extends VuexModule {
     roleList: any[] = []
@@ -11,7 +12,7 @@ export default class RoleList extends VuexModule {
     @Mutation
     updateRoleList(params: any) {
         let res = params.user.data
-        let allGraph = params.graph.data
+        let allGraph = params.graph.data || {}
         let roleList: any[] = []
         Object.keys(res).forEach((item) => {
             let obj: any = {}
@@ -38,9 +39,9 @@ export default class RoleList extends VuexModule {
         this.roleList = roleList
     }
     @Action({ rawError: true, commit: 'updateRoleList' })
-    async getRoleList() {
+    async getRoleList(name: string) {
         let res = await getRoleList()
-        let allGraph = await getAllSubGraph()
+        let allGraph = await getUserGraph(name)
         return {
             user: res,
             graph: allGraph

@@ -9,7 +9,7 @@
                     size="mini"
                     @change="
                         () => {
-                            this.roleListStore.getRoleList()
+                            this.roleListStore.getRoleList(this.currentUserName)
                             this.accountListStore.getUserList(this.currentUserName)
                         }
                     "
@@ -387,7 +387,7 @@ export default class Authority extends Vue {
 
     created() {
         this.accountListStore.getUserList(this.currentUserName)
-        this.roleListStore.getRoleList()
+        this.roleListStore.getRoleList(this.currentUserName)
     }
     async deleteUser(index, data) {
         if (data.userName === this.currentUserName) {
@@ -458,7 +458,7 @@ export default class Authority extends Vue {
                 type: 'error'
             })
         }
-        this.roleListStore.getRoleList()
+        this.roleListStore.getRoleList(this.currentUserName)
     }
     cancelAddUser() {
         this.showUserDig = false
@@ -634,7 +634,7 @@ export default class Authority extends Vue {
                     //     this.$router.push({ name: 'UserLogin' })
                     //     return
                     // }
-                    this.roleListStore.getRoleList()
+                    this.roleListStore.getRoleList(this.currentUserName)
                 } else {
                     this.$message({
                         type: 'error',
@@ -685,7 +685,7 @@ export default class Authority extends Vue {
                 type: 'error'
             })
         }
-        this.roleListStore.getRoleList()
+        this.roleListStore.getRoleList(this.currentUserName)
         this.closeChangeGraphRightDig()
     }
 
@@ -716,7 +716,7 @@ export default class Authority extends Vue {
             permissions[item.graphName] = item.graphRight
         })
         await this.roleListStore.setRolePermissions({ roleName: this.addRoleName, data: permissions })
-        this.roleListStore.getRoleList()
+        this.roleListStore.getRoleList(this.currentUserName)
         this.closeAddGraphRightDig()
     }
     beforeUpdate() {

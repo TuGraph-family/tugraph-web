@@ -20,7 +20,7 @@
             <div class="control-menu-list-item DbStatus" :class="currentRouter.name === 'DbStatus' ? 'active' : ''">
                 <router-link to="/ControlBoard/DbStatus">{{ $t('t3') }}</router-link>
             </div>
-            <div class="control-menu-list-item TaskList" :class="currentRouter.name === 'TaskList' ? 'active' : ''">
+            <div class="control-menu-list-item TaskList" :class="currentRouter.name === 'TaskList' ? 'active' : ''" v-if="isAdmin">
                 <router-link to="/ControlBoard/TaskList">{{ $t('t4') }}</router-link>
             </div>
             <div class="control-menu-list-item AuditLog" :class="currentRouter.name === 'AuditLog' ? 'active' : ''">

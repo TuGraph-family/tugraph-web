@@ -4,7 +4,7 @@ export function getAllLabel(params: { graph: string }) {
     let api_url = `/db/${params.graph}/label`
     let options = {
         headers: {
-            Authorization: sessionStorage.__FMA_TOKEN__
+            Authorization: localStorage.__FMA_TOKEN__
         }
     }
     return http.get(api_url, {}, options)
@@ -14,7 +14,7 @@ export function getLabelFormat(params: { graph: string; type: string; name: stri
     let api_url = `/db/${params.graph}/label/${params.type}/${params.name}`
     let options = {
         headers: {
-            Authorization: sessionStorage.__FMA_TOKEN__
+            Authorization: localStorage.__FMA_TOKEN__
         }
     }
     return http.get(api_url, {}, options)
@@ -24,7 +24,7 @@ export function createLabel(params: { graph: string; data: { name: string; field
     let api_url = `/db/${params.graph}/label`
     let options = {
         headers: {
-            Authorization: sessionStorage.__FMA_TOKEN__
+            Authorization: localStorage.__FMA_TOKEN__
         }
     }
     return http.post(api_url, params.data, options)
@@ -34,7 +34,7 @@ export function createIndex(params: { graph: string; data: { label: string; fiel
     let api_url = `/db/${params.graph}/index`
     let options = {
         headers: {
-            Authorization: sessionStorage.__FMA_TOKEN__
+            Authorization: localStorage.__FMA_TOKEN__
         }
     }
     return http.post(api_url, params.data, options)
@@ -44,7 +44,7 @@ export function deleteIndex(params: { graph: string; label: string; prop: string
     let api_url = `/db/${params.graph}/index/${params.label}/${params.prop}`
     let options = {
         headers: {
-            Authorization: sessionStorage.__FMA_TOKEN__
+            Authorization: localStorage.__FMA_TOKEN__
         }
     }
     return http.delete(api_url, {}, options)
@@ -54,7 +54,7 @@ export function getIndex(params: { graph: string; label: string }) {
     let api_url = `/db/${params.graph}/index/${params.label}`
     let options = {
         headers: {
-            Authorization: sessionStorage.__FMA_TOKEN__
+            Authorization: localStorage.__FMA_TOKEN__
         }
     }
     return http.get(api_url, {}, options)
@@ -65,7 +65,7 @@ export function deleteLabel(currentGraph: string, params: { labelName: string; l
     let cypher = `CALL db.deleteLabel('${params.labelType}', '${params.labelName}')`
     let options = {
         headers: {
-            Authorization: sessionStorage.__FMA_TOKEN__
+            Authorization: localStorage.__FMA_TOKEN__
         }
     }
     return http.post('/cypher', { graph: currentGraph, script: cypher }, options)
@@ -77,7 +77,7 @@ export function deleteFieldsFromLabel(currentGraph: string, params: { labelName:
     let cypher = `CALL db.alterLabelDelFields('${params.labelType}', '${params.labelName}',${fields})`
     let options = {
         headers: {
-            Authorization: sessionStorage.__FMA_TOKEN__
+            Authorization: localStorage.__FMA_TOKEN__
         }
     }
     return http.post('/cypher', { graph: currentGraph, script: cypher }, options)
@@ -97,7 +97,7 @@ export function addFieldsFromLabel(currentGraph: string, params: { labelName: st
     let cypher = `CALL db.alterLabelAddFields('${params.labelType}', '${params.labelName}',${props})`
     let options = {
         headers: {
-            Authorization: sessionStorage.__FMA_TOKEN__
+            Authorization: localStorage.__FMA_TOKEN__
         }
     }
     return http.post('/cypher', { graph: currentGraph, script: cypher }, options)
@@ -114,7 +114,7 @@ export function alterFieldsFromLabel(currentGraph: string, params: { labelName: 
     let cypher = `CALL db.alterLabelModFields('${params.labelType}', '${params.labelName}',${props})`
     let options = {
         headers: {
-            Authorization: sessionStorage.__FMA_TOKEN__
+            Authorization: localStorage.__FMA_TOKEN__
         }
     }
     return http.post('/cypher', { graph: currentGraph, script: cypher }, options)
@@ -125,7 +125,7 @@ export function getLabelDetail(params: { labelName: string; labelType: string; g
     let cypher = params.labelType === 'vertex' ? `CALL db.getVertexSchema('${params.labelName}')` : `CALL db.getEdgeSchema('${params.labelName}')`
     let options = {
         headers: {
-            Authorization: sessionStorage.__FMA_TOKEN__
+            Authorization: localStorage.__FMA_TOKEN__
         }
     }
     return http.post(
@@ -142,7 +142,7 @@ export function importSchema(params: { description: string; graphName: string })
     let api_url = `/db/${params.graphName}/schema/text`
     let options = {
         headers: {
-            Authorization: sessionStorage.__FMA_TOKEN__
+            Authorization: localStorage.__FMA_TOKEN__
         }
     }
     return http.post(

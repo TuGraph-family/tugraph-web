@@ -28,10 +28,10 @@ const onSuccess = function(response: params): params {
 //   请求失败
 const onError = function(error: params): params {
     // console.log(error.response)
-    if (error.response && error.response.status === 401) {
+    if (error.response && error.response.status === 401 && error.response.data.error_message.includes('token')) {
         router.push({ name: 'UserLogin' })
-        sessionStorage.__FMA_TOKEN__ = ''
-        // sessionStorage.__FMA_USERINFO__ = ''
+        localStorage.__FMA_TOKEN__ = ''
+        // localStorage.__FMA_USERINFO__ = ''
     }
     return error.response
 }
@@ -53,8 +53,8 @@ class HttpClient {
                 // 如果请求时候，与刷新token发生碰撞，进行3秒延迟
                 if (!config.headers.Authorization && config.url !== '/login' && config.url !== '/refresh') {
                     await sleep(3000)
-                    console.log(sessionStorage.__FMA_TOKEN__)
-                    config.headers.Authorization = sessionStorage.__FMA_TOKEN__
+                    console.log(localStorage.__FMA_TOKEN__)
+                    config.headers.Authorization = localStorage.__FMA_TOKEN__
                     return config
                 } else {
                     return config
