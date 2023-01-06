@@ -45,6 +45,7 @@ import UserLoginStore from '@/store/user-login/user-login'
 import ChangePwd from '@/components/change-pwd/change-pwd.vue'
 import CreateLabelStore from '@/store/create-label/create-label'
 import SubGraphManageStore from '@/store/subgraph-manage/subgraph-manage'
+import CypherStore from '@/store/cypher/cypher'
 @Component({
     components: {
         SubGraphManage,
@@ -56,6 +57,7 @@ export default class Workbench extends Vue {
     userLoginStore: UserLoginStore = getModule(UserLoginStore, store)
     createLabelStore: CreateLabelStore = getModule(CreateLabelStore, store)
     subGraphManageStore: SubGraphManageStore = getModule(SubGraphManageStore, store)
+    cypherStore: CypherStore = getModule(CypherStore, store)
     showUserLogoutPanel: boolean = false
     showChagePwd: boolean = false
     hideMenu: boolean = false
@@ -86,6 +88,8 @@ export default class Workbench extends Vue {
         this.showChagePwd = true
     }
     async logout() {
+        this.cypherStore.upDateCypherReasultDatas([])
+        this.subGraphManageStore.updateSelectedSubGraph('')
         let res = await this.userLoginStore.userLogout()
         location.href = location.origin + '#/login'
     }

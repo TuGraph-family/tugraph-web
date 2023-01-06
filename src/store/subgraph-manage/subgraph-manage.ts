@@ -15,20 +15,25 @@ export default class SubGraphManage extends VuexModule {
     @Mutation
     updateAllSubGraphList(response: any): void {
         if (response && response.status === 200) {
-            this.allSubGraphList = response.data
+            this.allSubGraphList = response.data || {}
         }
     }
     @Mutation
     updateSubGraphList(response: any): void {
         if (response && response.status === 200) {
-            delete response.data['@meta_graph@']
+            if (response.data) {
+                delete response.data['@meta_graph@']
+            }
             let data: any = {}
-            Object.keys(response.data).forEach((item) => {
+
+            Object.keys(response.data || {}).forEach((item) => {
                 if (response.data[item] !== 'NONE') {
                     data[item] = response.data[item]
                 }
             })
+
             this.subGraphList = data
+
             if (!this.allSubGraphList) {
                 this.selectedSubGraph = ''
                 this.selectedSubGraphDesc = ''
@@ -37,12 +42,12 @@ export default class SubGraphManage extends VuexModule {
             // **这是什么乱糟糟的鬼逻辑,找个时间优化一下吧**
             if (this.subGraphList) {
                 if (!this.selectedSubGraph) {
-                    this.selectedSubGraph = Object.keys(this.subGraphList)[0]
-                    this.selectedSubGraphDesc = this.allSubGraphList[Object.keys(response.data)[0]] ? this.allSubGraphList[Object.keys(response.data)[0]].description : this.selectedSubGraph
+                    this.selectedSubGraph = Object.keys(this.subGraphList || {})[0] || ''
+                    // this.selectedSubGraphDesc = this.allSubGraphList[Object.keys(response.data)[0]] ? this.allSubGraphList[Object.keys(response.data)[0]].description : this.selectedSubGraph
                 } else {
-                    if (!Object.keys(response.data).includes(this.selectedSubGraph) && Object.keys(response.data).length > 1) {
-                        this.selectedSubGraph = Object.keys(response.data)[0]
-                        this.selectedSubGraphDesc = this.allSubGraphList[Object.keys(response.data)[0]] ? this.allSubGraphList[Object.keys(response.data)[0]].description : this.selectedSubGraph
+                    if (!Object.keys(response.data || {}).includes(this.selectedSubGraph) && Object.keys(response.data || {}).length > 1) {
+                        this.selectedSubGraph = Object.keys(response.data || {})[0] || ''
+                        // this.selectedSubGraphDesc = this.allSubGraphList[Object.keys(response.data)[0]] ? this.allSubGraphList[Object.keys(response.data)[0]].description : this.selectedSubGraph
                     }
                 }
             }
@@ -50,10 +55,11 @@ export default class SubGraphManage extends VuexModule {
     }
     @Mutation
     updateSelectedSubGraph(subGraphName: string) {
-        if (subGraphName) {
-            this.selectedSubGraph = subGraphName
-            this.selectedSubGraphDesc = this.allSubGraphList[subGraphName] ? this.allSubGraphList[subGraphName].description : ''
-        }
+        this.selectedSubGraph = subGraphName
+        // if (subGraphName) {
+        //     this.selectedSubGraph = subGraphName || ''
+        //     this.selectedSubGraphDesc = this.allSubGraphList[subGraphName] ? this.allSubGraphList[subGraphName].description : ''
+        // }
     }
     // @Action({ commit: 'updateSubGraphList' })
     // async getAllSubGraph() {
@@ -70,7 +76,7 @@ export default class SubGraphManage extends VuexModule {
     // 获取当前用户的权限，（getAllSubGraph）这个api非admin用户不能使用，所以使用这个接口获取当前用户的子图
     @Action({ commit: 'updateSubGraphList' })
     async getUserGraph(params: string) {
-        await this.getAllSubGraph()
+        // await this.getAllSubGraph()
         return await getUserGraph(params)
     }
     @Action({ commit: 'updateAllSubGraphList' })

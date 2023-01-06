@@ -190,7 +190,9 @@ function getNodeIds(params: any): Array<number> {
                 //     return $3
                 // })
                 let vid = JSON.parse(item[c]).identity
-                nodeIds.push(parseInt(vid))
+                if (typeof vid === 'number') {
+                    nodeIds.push(vid)
+                }
             }
         })
     })
@@ -244,20 +246,26 @@ function getNodeIdsByEids(params: any): { nodeIds: Array<number>; edgeIds: Array
 
 async function querySubGraph(graph: string, nodeIds: Array<number>) {
     let res = await getSubGraph({ graph: graph, nodeIds: nodeIds })
-    let graphData = JSON.parse(res.data.result[0])
+    if (res.status === 200) {
+        let graphData = JSON.parse(res.data.result[0])
+        graphData.nodes.forEach((item) => {
+            item.vid = item.identity
+        })
 
-    graphData.nodes.forEach((item) => {
-        item.vid = item.identity
-    })
-
-    graphData.relationships.forEach((item) => {
-        item.source = item.src
-        item.destination = item.dst
-        item.uid = `${item.src}_${item.dst}_${item.label_id}_${item.temporal_id}_${item.identity}`
-    })
-    return {
-        status: res.status,
-        data: graphData
+        graphData.relationships.forEach((item) => {
+            item.source = item.src
+            item.destination = item.dst
+            item.uid = `${item.src}_${item.dst}_${item.label_id}_${item.temporal_id}_${item.identity}`
+        })
+        return {
+            status: res.status,
+            data: graphData
+        }
+    } else {
+        return {
+            status: res.status,
+            data: res.data
+        }
     }
 }
 
@@ -267,6 +275,10 @@ export default class Cypher extends VuexModule {
     tabValue: string = ''
 
     cypherReasultDatas: Array<tabData> = []
+    @Mutation
+    upDateCypherReasultDatas(data: Array<tabData>) {
+        this.cypherReasultDatas = data
+    }
     @Mutation
     updateGraphDataMethodResult(params: { tabValue: string; res: any[] }) {
         let tabValue = params.tabValue
@@ -817,6 +829,8 @@ export default class Cypher extends VuexModule {
                     }
                     graphData = craeteGraphData(subGraphReasult, params.type, 'queryByCypher')
                     console.log(graphData)
+                } else {
+                    codeData = createCodeData(result)
                 }
             }
         } else {

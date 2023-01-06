@@ -37,8 +37,11 @@ export default class UserLogin extends Vue {
     onChangeUserName() {
         this.userLoginStore.updateUserName(this.userName)
     }
-    created(): void {}
+    created(): void {
+        console.log('login created')
+    }
     mounted(): void {
+        console.log('login mounted')
         document.addEventListener('keydown', this.submit)
     }
     submit(value: any) {

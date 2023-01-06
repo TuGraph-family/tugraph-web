@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-import router from './router'
+
 import store from './store'
 import VueParticles from 'vue-particles'
 import Contextmenu from 'vue-contextmenujs'
@@ -94,8 +94,9 @@ Vue.prototype.$interval.start()
 import enLang from 'element-ui/lib/locale/lang/en'
 import zhLang from 'element-ui/lib/locale/lang/zh-CN'
 import locale from 'element-ui/lib/locale'
-
+import router from './router'
 import { refreshToken } from '@/service/user-login/user-login'
+
 Vue.use(VueI18n)
 
 const i18n = new VueI18n({
@@ -112,12 +113,12 @@ let intervalTaskId = Vue.prototype.$interval.registTask({
         let currentTime = new Date().getTime()
         if (currentTime - loadTime > 50 * 60 * 1000) {
             localStorage.loadTime = currentTime
-            let token = sessionStorage.__FMA_TOKEN__
+            let token = localStorage.__FMA_TOKEN__
             if (token) {
-                sessionStorage.__FMA_TOKEN__ = ''
+                localStorage.__FMA_TOKEN__ = localStorage.__FMA_TOKEN__ || ''
                 let res = await refreshToken({ jwt: token })
                 if (res && res.status === 200) {
-                    sessionStorage.__FMA_TOKEN__ = 'Bearer ' + res.data.jwt
+                    localStorage.__FMA_TOKEN__ = 'Bearer ' + res.data.jwt
                 }
             }
         }

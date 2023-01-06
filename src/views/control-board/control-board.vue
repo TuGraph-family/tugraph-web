@@ -38,7 +38,7 @@ import { getModule } from 'vuex-module-decorators'
 import UserLoginStore from '@/store/user-login/user-login'
 import ControlMenu from '@/views/control-board/control-menu/control-menu.vue'
 import SubGraphManageStore from '@/store/subgraph-manage/subgraph-manage'
-
+import CypherStore from '@/store/cypher/cypher'
 import ChangePwd from '@/components/change-pwd/change-pwd.vue'
 @Component({
     components: {
@@ -51,6 +51,7 @@ export default class ControlBoard extends Vue {
     subGraphManageStore: SubGraphManageStore = getModule(SubGraphManageStore, store)
     showUserLogoutPanel: boolean = false
     showChagePwd: boolean = false
+    cypherStore: CypherStore = getModule(CypherStore, store)
     get userName() {
         return this.userLoginStore.userName
     }
@@ -68,6 +69,8 @@ export default class ControlBoard extends Vue {
         this.showChagePwd = true
     }
     async logout() {
+        this.cypherStore.upDateCypherReasultDatas([])
+        this.subGraphManageStore.updateSelectedSubGraph('')
         let res = await this.userLoginStore.userLogout()
         location.href = location.origin + '#/login'
     }

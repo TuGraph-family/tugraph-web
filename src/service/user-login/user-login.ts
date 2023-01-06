@@ -10,7 +10,9 @@ interface options {
 export function userLogin(params: userLoginParams) {
     let api_url = '/login'
     let options: options = {}
-    return http.post(api_url, params, options)
+    if (params.user && params.password) {
+        return http.post(api_url, params, options)
+    }
 }
 
 export function refreshToken(params: { jwt: string }) {
@@ -27,7 +29,7 @@ export function logout(params: { jwt: string }) {
     let api_url = '/logout'
     let options: options = {
         headers: {
-            Authorization: sessionStorage.__FMA_TOKEN__
+            Authorization: localStorage.__FMA_TOKEN__
         }
     }
     return http.post(api_url, params, options)

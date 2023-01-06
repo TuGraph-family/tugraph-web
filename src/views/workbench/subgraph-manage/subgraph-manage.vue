@@ -108,7 +108,12 @@ export default class SubGraphManage extends Vue {
     created() {
         this.targetComponentName = this.$route.name
         this.subGraphManageStore.getUserGraph(this.userLoginStore.userName)
+        this.subGraphManageStore.getUserGraph(this.userLoginStore.userName)
     }
+    activated() {
+        this.subGraphManageStore.getUserGraph(this.userLoginStore.userName)
+    }
+    mounted(): void {}
     updateSelectedSubGraph(value: string) {
         this.subGraphManageStore.updateSelectedSubGraph(value)
     }
