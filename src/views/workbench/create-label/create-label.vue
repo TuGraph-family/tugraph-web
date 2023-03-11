@@ -440,6 +440,7 @@ export default class WorkbenchCreateLabel extends Vue {
                     })
                     row.isNew = false
                     row.isEdit = false
+                    this.createLabelStore.getAllLabel({ graph: this.currentSelectedGraph })
                 } else {
                     this.$message({
                         type: 'error',
@@ -671,7 +672,10 @@ export default class WorkbenchCreateLabel extends Vue {
                 properties: Object.keys(item.props).map((name) => {
                     return {
                         name: name,
-                        type: item.props[name].type
+                        type: item.props[name].type,
+                        optional: item.props[name].optional,
+                        index: item.props[name].isIndex,
+                        unique: item.props[name].isUnique
                     }
                 })
             }
@@ -679,12 +683,15 @@ export default class WorkbenchCreateLabel extends Vue {
         edgedata = this.edgeLabels.map((item) => {
             return {
                 label: item.name,
-                primary: item.primary,
                 type: 'EDGE',
+                primary: item.primary,
                 properties: Object.keys(item.props).map((name) => {
                     return {
                         name: name,
-                        type: item.props[name].type
+                        type: item.props[name].type,
+                        optional: item.props[name].optional,
+                        index: item.props[name].isIndex,
+                        unique: item.props[name].isUnique
                     }
                 }),
                 constraints: item.constraints

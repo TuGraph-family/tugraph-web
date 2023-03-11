@@ -13,6 +13,7 @@ export default class RoleList extends VuexModule {
     updateRoleList(params: any) {
         let res = params.user.data
         let allGraph = params.graph.data || {}
+        allGraph && delete allGraph['@meta_graph@']
         let roleList: any[] = []
         Object.keys(res).forEach((item) => {
             let obj: any = {}

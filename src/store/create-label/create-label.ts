@@ -192,7 +192,7 @@ export default class CreateLabel extends VuexModule {
                 // 调用下面的接口会自动取消index alterFieldsFromLabel
                 res = await alterFieldsFromLabel(params.graph, { labelName: params.labelName, labelType: params.labelType, fields: [[params.labelPropName, params.labelNewProp.type, false]] })
                 if (params.labelNewProp.isIndex) {
-                    await createIndex({ graph: params.graph, data: { label: params.labelName, field: params.labelPropName, is_unique: params.labelNewProp.isUnique } })
+                    res = await createIndex({ graph: params.graph, data: { label: params.labelName, field: params.labelPropName, is_unique: params.labelNewProp.isUnique } })
                 }
             } else {
                 res = await alterFieldsFromLabel(params.graph, { labelName: params.labelName, labelType: params.labelType, fields: [[params.labelPropName, params.labelNewProp.type, true]] })
