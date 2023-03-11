@@ -3,23 +3,34 @@ import Vue from 'vue'
 import router from '../router/index'
 let baseUrl = '/'
 
+function getType(data: any): string {
+    let type: string = ''
+    type = Object.prototype.toString
+        .call([])
+        .replace(/\[|]/gi, '')
+        .split(/\s/)[1]
+    return type
+}
+
 interface params {
     [propName: string]: any
 }
 
 //   参数预处理函数
 function prepareParams(params: params): params {
-    let newParams: params = {}
-    if (params) {
+    if (getType(params) === 'Object') {
+        let newParams: params = {}
         for (let key in params) {
             if (params[key] === '' || params[key] === null) {
                 continue
             }
             newParams[key] = params[key]
         }
+        return newParams
     }
-
-    return newParams
+    if (getType(params) === 'Array') {
+        return params
+    }
 }
 //   请求成功
 const onSuccess = function(response: params): params {
