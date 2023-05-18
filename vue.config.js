@@ -2,7 +2,7 @@ const path = require('path')
 const os = require('os')
 
 let dir = process.env.DIR
-console.log(dir)
+// console.log(dir)
 module.exports = {
     publicPath: dir,
     productionSourceMap: false,
@@ -40,9 +40,9 @@ module.exports = {
             .loader('@kazupon/vue-i18n-loader')
             .end()
         config.plugin('fork-ts-checker').tap((args) => {
-            let totalmem = Math.floor(os.totalmem() / 1024 / 1024) //get OS mem size
-            let allowUseMem = totalmem > 2048 ? 4096 : 2048
-            args[0].memoryLimit = allowUseMem
+            // let totalmem = Math.floor(os.totalmem() / 1024 / 1024) //get OS mem size
+            // let allowUseMem = totalmem > 2048 ? 4096 : 2048
+            // args[0].memoryLimit = allowUseMem
             return args
         })
     }
