@@ -17,7 +17,11 @@ npm run serve
 ### 项目编译
 
 ```
+# 打包绝对路径 '/resource'
 npm run build
+
+# 打包相对路径 './resource'
+npm run relative
 ```
 
 ### 开发环境

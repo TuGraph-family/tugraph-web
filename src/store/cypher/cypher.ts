@@ -85,6 +85,7 @@ function createTableData(params: any): TableData {
     let tableData: Array<{ [propName: string]: any }> = []
     let header = params.data.header
     let body = params.data.result
+    debugger
     body.forEach((item: any) => {
         let obj: {
             [propName: string]: any
@@ -101,6 +102,7 @@ function createTableData(params: any): TableData {
         })
         tableData.push(obj)
     })
+
     return tableData
 }
 function createCodeData(params: any): CodeData {
