@@ -1,0 +1,6 @@
+{
+    "description": "{\"files\":[{\"format\":\"CSV\",\"label\":\"事件关系\",\"columns\":[\"SRC_ID\",\"DST_ID\",\"no\",\"name\",\"title\",\"year\"],\"header\":0,\"SRC_ID\":\"组织\",\"DST_ID\":\"角色\"}]}",
+    "data": "联合政府,刘启,3,3 被查出违法开车，被关进监狱,木星危机,2075\n救援小队,韩子昂,6,6 在韩子昂逃难时紧急征用其车辆,木星危机,2075",
+    "continue_on_error": false,
+    "delimiter": ","
+}

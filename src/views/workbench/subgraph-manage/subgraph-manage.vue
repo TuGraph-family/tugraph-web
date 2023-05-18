@@ -207,7 +207,7 @@ export default class SubGraphManage extends Vue {
         border-radius: 4px;
         padding: 0 16px;
         &.scene-dialog {
-            width: 640px;
+            width: 960px;
             height: auto;
         }
     }

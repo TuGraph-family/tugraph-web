@@ -1,0 +1,6 @@
+{
+    "description": "{\"files\":[{\"format\":\"CSV\",\"label\":\"事件关系\",\"columns\":[\"SRC_ID\",\"DST_ID\",\"no\",\"name\",\"title\",\"year\"],\"header\":0,\"SRC_ID\":\"角色\",\"DST_ID\":\"组织\"}]}",
+    "data": "刘培强,领航员面试组,1,1 面试领航员,月球危机,2058\n周喆直,联合政府,13,13 强行命令启动点火行星发动机,月球危机,2058",
+    "continue_on_error": false,
+    "delimiter": ","
+}

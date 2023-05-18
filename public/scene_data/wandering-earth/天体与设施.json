@@ -1,0 +1,6 @@
+{
+    "description": "{\"files\":[{\"format\":\"CSV\",\"label\":\"天体与设施\",\"columns\":[\"name\",\"description\"],\"header\":0}]}",
+    "data": "地球,\n月球,\n木星,\n方舟空间站,太空电梯上\n国际空间站,近地轨道上，在流浪旅途中领航\n太空电梯,\n太空电梯基地,\n互联网北京根服务器,\n杭州行星发动机,\n苏拉威西行星发动机,",
+    "continue_on_error": false,
+    "delimiter": ","
+}

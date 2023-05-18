@@ -1,0 +1,6 @@
+{
+    "description": "{\"files\":[{\"format\":\"CSV\",\"label\":\"组织\",\"columns\":[\"name\",\"description\"],\"header\":0}]}",
+    "data": "救援小队,执行火石运送任务\n领航员面试组,面试领航员\n联合政府,地球上各国成立的联合政府",
+    "continue_on_error": false,
+    "delimiter": ","
+}

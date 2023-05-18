@@ -102,6 +102,44 @@ const Demos = [
             `CALL db.createEdgeLabel('street_to_address','[["street","address"]]')`
         ],
         createIndexScript: []
+    },
+    {
+        name: '流浪地球',
+        key: 'WE',
+        description: '流浪地球示例',
+        data: async () => {
+            let fileNames = [
+                '天体与设施',
+                '组织',
+                '角色',
+                '事件_天体与设施_天体与设施',
+                '事件_组织_天体与设施',
+                '事件_组织_角色',
+                '事件_角色_天体与设施',
+                '事件_角色_组织',
+                '事件_角色_角色',
+                '关系_角色_天体与设施',
+                '关系_角色_组织',
+                '关系_角色_角色'
+            ]
+            let dirName = 'wandering-earth'
+            let dataPromiseList = []
+            fileNames.forEach((name) => {
+                dataPromiseList.push(getSceneData({ dirName: dirName, fileName: name, last: 'json' }))
+            })
+            let res = await Promise.all(dataPromiseList)
+            let data = res.map((item) => {
+                return item.data
+            })
+            return data
+        },
+        createLabelScript: [
+            `CALL db.createVertexLabel('天体与设施', 'name' , 'name' ,STRING, false, 'description' ,STRING, true)`,
+            `CALL db.createVertexLabel('组织', 'name' , 'name' ,STRING, false, 'description' ,STRING, true)`,
+            `CALL db.createVertexLabel('角色', 'name' , 'name' ,STRING, false, 'description' ,STRING, true, 'birthYear', INT32, true)`,
+            `CALL db.createEdgeLabel('关系','[["角色","角色"],["角色","天体与设施"],["角色","组织"]]', 'name', STRING, true)`,
+            `CALL db.createEdgeLabel('事件关系','[["角色","角色"],["角色","天体与设施"],["角色","组织"],["天体与设施","天体与设施"],["组织","角色"],["组织","天体与设施"]]', 'title', STRING, true, 'year', INT32, true, 'no', INT32, false, 'name', STRING, true)`
+        ]
     }
 ]
 

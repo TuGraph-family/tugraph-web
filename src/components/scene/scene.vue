@@ -68,7 +68,7 @@ export default class SceneComponent extends Vue {
     }
     async createSubGraph(scene: any, index: number) {
         let n = 1
-        let subGraphNames: Array<string> = Object.keys(this.subGraphManageStore.allSubGraphList || [])
+        let subGraphNames: Array<string> = Object.keys(this.subGraphManageStore.subGraphList || [])
         subGraphNames.forEach((item) => {
             item.startsWith(scene.name) && n++
         })
@@ -196,6 +196,9 @@ export default class SceneComponent extends Vue {
     }
     .covid {
         background-image: url('../../assets/scene/covid.png');
+    }
+    .WE {
+        background-image: url('../../assets/scene/earth.png');
     }
 }
 </style>

@@ -1,7 +1,8 @@
 import axios from 'axios'
 import Vue from 'vue'
 import router from '../router/index'
-let baseUrl = '/'
+console.log(process.env)
+let baseUrl = process.env.VUE_APP_API_URL
 
 function getType(data: any): string {
     let type: string = ''

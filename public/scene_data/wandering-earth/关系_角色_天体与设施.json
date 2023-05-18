@@ -1,0 +1,6 @@
+{
+    "description": "{\"files\":[{\"format\":\"CSV\",\"label\":\"关系\",\"columns\":[\"SRC_ID\",\"DST_ID\",\"name\"],\"header\":0,\"SRC_ID\":\"角色\",\"DST_ID\":\"天体与设施\"}]}",
+    "data": "刘培强,太空电梯,守卫\n韩朵朵大,太空电梯,守卫\n张鹏,太空电梯,守卫\nMOSS,太空电梯基地,控制",
+    "continue_on_error": false,
+    "delimiter": ","
+}
