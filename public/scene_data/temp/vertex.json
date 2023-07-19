@@ -1,0 +1,6 @@
+{
+    "description": "{\"files\":[{\"format\":\"CSV\",\"label\":\"角色\",\"columns\":[\"birthYear\",\"name\",\"description\"],\"header\":0}]}",
+    "data": "",
+    "continue_on_error": false,
+    "delimiter": ","
+}

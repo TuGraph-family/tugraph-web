@@ -13,3 +13,13 @@ export function getSceneData(params: { dirName: string; fileName: string; last: 
     }
     return http.get(api_url, {}, options)
 }
+
+export function getApplicationData(params: { dirName: string; fileName: string; last: string }) {
+    let api_url = `${baseUrl}app_data/${params.dirName}/${params.fileName}.${params.last}`
+    let options: options = {
+        headers: {
+            Authorization: localStorage.__FMA_TOKEN__
+        }
+    }
+    return http.get(api_url, {}, options)
+}

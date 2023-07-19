@@ -152,6 +152,7 @@ export default class SceneComponent extends Vue {
     height: 100%;
     overflow: hidden;
     display: flex;
+    flex-wrap: wrap;
     padding: 10px 0 20px 0;
     justify-content: space-between;
     .loading-container {
@@ -161,6 +162,7 @@ export default class SceneComponent extends Vue {
     .scene-item {
         margin-top: 10px;
         width: 295px;
+        min-width: 295px;
         height: 180px;
         border: 1px dashed #ccc;
         border-radius: 8px;
@@ -199,6 +201,9 @@ export default class SceneComponent extends Vue {
     }
     .WE {
         background-image: url('../../assets/scene/earth.png');
+    }
+    .TB {
+        background-image: url('../../assets/scene/tb.png');
     }
 }
 </style>

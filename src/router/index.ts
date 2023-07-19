@@ -15,6 +15,9 @@ import TaskList from '@/views/control-board/task-list/task-list.vue'
 import AuditLog from '@/views/control-board/audit-log/audit-log.vue'
 import RoleList from '@/views/control-board/role-list/role-list.vue'
 import Authority from '@/views/control-board/authority/authority.vue'
+// 应用Demo
+import Applications from '../views/plugin-applications/plugin-applications.vue'
+import TravelLine from '../views/plugin-applications/travel-line/travel-line.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -108,6 +111,18 @@ const routes = [
         path: '/login',
         name: 'UserLogin',
         component: UserLogin
+    },
+    {
+        path: '/Applications',
+        name: 'Applications',
+        component: Applications,
+        children: [
+            {
+                path: 'TravelLine',
+                name: 'TravelLine',
+                component: TravelLine
+            }
+        ]
     }
 ]
 

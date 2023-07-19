@@ -1,0 +1,6 @@
+{
+    "description": "{\"files\":[{\"format\":\"CSV\",\"label\":\"organization_plan\",\"columns\":[\"SRC_ID\",\"DST_ID\",\"relation\"],\"header\":0,\"SRC_ID\":\"organization\",\"DST_ID\":\"plan\"}]}",
+    "data": "ETO,破壁计划,提出\nPDC,面壁计划,提出\nPDC,群星计划,提出",
+    "continue_on_error": false,
+    "delimiter": ","
+}

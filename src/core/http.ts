@@ -39,8 +39,8 @@ const onSuccess = function(response: params): params {
 }
 //   请求失败
 const onError = function(error: params): params {
-    // console.log(error.response)
-    if (error.response && error.response.status === 401 && error.response.data.error_message.includes('token')) {
+    // console.log(error.response) // 判断token失效的字符串 Authentication
+    if (error.response && error.response.status === 401 && (error.response.data.error_message.includes('Authentication') || error.response.data.error_message.includes('token'))) {
         router.push({ name: 'UserLogin' })
         localStorage.__FMA_TOKEN__ = ''
         // localStorage.__FMA_USERINFO__ = ''
@@ -54,6 +54,7 @@ function sleep(time) {
 class HttpClient {
     private httpClient: any
     public constructor() {
+        axios.defaults.timeout = 60 * 1000 * 60 * 24 * 7
         let httpClient = axios.create({
             baseURL: baseUrl,
             withCredentials: false

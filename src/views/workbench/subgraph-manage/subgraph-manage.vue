@@ -12,6 +12,7 @@
         </el-select>
         <a class="subgraph-manage-addbtn new-graph" @click="dialogVisible = true" v-if="isAdmin"> <i class="el-icon-circle-plus-outline"></i> {{ $t('text2') }} </a>
         <a class="subgraph-manage-addbtn new-scene" @click="demoDialogVisible = true" v-if="isAdmin"> <i class="el-icon-circle-plus-outline"></i> {{ $t('text10') }} </a>
+        <!-- <a class="subgraph-manage-addbtn new-applications" @click="appDialogVisible = true" v-if="isAdmin"> <i class="el-icon-circle-plus-outline"></i> 新建应用 </a> -->
         <i class="el-icon-question help-icon" v-if="targetComponentName !== 'Help'" @click="showHelp"></i>
         <el-dialog :visible.sync="dialogVisible" :title="$t('text3')">
             <section class="subgraph-manage-dialog">
@@ -39,6 +40,9 @@
         </el-dialog>
         <el-dialog :destroy-on-close="true" :custom-class="'scene-dialog'" :visible.sync="demoDialogVisible" :title="$t('text10')">
             <Scene></Scene>
+        </el-dialog>
+        <el-dialog :destroy-on-close="true" :custom-class="'application-dialog'" :visible.sync="appDialogVisible" title="应用集合">
+            <PluginApplicationsPop :show.sync="appDialogVisible"></PluginApplicationsPop>
         </el-dialog>
         <el-drawer size="40%" :visible.sync="drawer" :with-header="false">
             <div class="help-content">
@@ -70,13 +74,15 @@ import ImportData from '../help/data-import.vue'
 import CypherQuery from '../help/cypher-query.vue'
 import Plugin from '../help/plugins.vue'
 import Scene from '@/components/scene/scene.vue'
+import PluginApplicationsPop from '@/views/plugin-applications/plugin-application-pop.vue'
 
-@Component({ components: { CreateLabel, ImportData, CypherQuery, Plugin, Scene } })
+@Component({ components: { CreateLabel, ImportData, CypherQuery, Plugin, Scene, PluginApplicationsPop } })
 export default class SubGraphManage extends Vue {
     subGraphManageStore: SubGraphManageStore = getModule(SubGraphManageStore, store)
     userLoginStore: UserLoginStore = getModule(UserLoginStore, store)
     dialogVisible: boolean = false
     demoDialogVisible: boolean = false
+    appDialogVisible: boolean = false
     dialogIsAddingGraph: boolean = false
     maxSizeGB: number = 2048
     isAsync: boolean = true
@@ -117,7 +123,7 @@ export default class SubGraphManage extends Vue {
     updateSelectedSubGraph(value: string) {
         this.subGraphManageStore.updateSelectedSubGraph(value)
     }
-    deleteSubGraph(subGraphName: string) {
+    deleteSubGraph(subGraphName) {
         this.$confirm(`${this.$t('confirm.text2', [subGraphName])}`, `${this.$t('confirm.text1')}`, {
             confirmButtonText: `${this.$t('confirm.text3')}`,
             cancelButtonText: `${this.$t('confirm.text4')}`,
@@ -210,6 +216,10 @@ export default class SubGraphManage extends Vue {
             width: 960px;
             height: auto;
         }
+        &.application-dialog {
+            width: 640px;
+            height: auto;
+        }
     }
     /deep/ .el-dialog__header {
         padding-top: 0;
@@ -254,6 +264,15 @@ export default class SubGraphManage extends Vue {
             }
         }
         &.new-scene {
+            &:hover {
+                color: #3e8cf6;
+                border-color: #3e8cf6;
+            }
+            &:active {
+                background: #f0f0f0;
+            }
+        }
+        &.new-applications {
             &:hover {
                 color: #3e8cf6;
                 border-color: #3e8cf6;

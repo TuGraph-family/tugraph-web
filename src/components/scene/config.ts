@@ -1,4 +1,4 @@
-import { getSceneData } from '@/service/get-scene-data/get-scene-data'
+import { getSceneData } from '@/service/get-public-data/get-public-data'
 const Demos = [
     {
         name: 'MovieDemo',
@@ -139,6 +139,36 @@ const Demos = [
             `CALL db.createVertexLabel('角色', 'name' , 'name' ,STRING, false, 'description' ,STRING, true, 'birthYear', INT32, true)`,
             `CALL db.createEdgeLabel('关系','[["角色","角色"],["角色","天体与设施"],["角色","组织"]]', 'name', STRING, true)`,
             `CALL db.createEdgeLabel('事件关系','[["角色","角色"],["角色","天体与设施"],["角色","组织"],["天体与设施","天体与设施"],["组织","角色"],["组织","天体与设施"]]', 'title', STRING, true, 'year', INT32, true, 'no', INT32, false, 'name', STRING, true)`
+        ]
+    },
+    {
+        name: '三体',
+        key: 'TB',
+        description: '三体示例。',
+        data: async () => {
+            let fileNames = ['三体人物表', '三体时间线', '三体组织合集', '三体计划合集', '人物-人物-关系', '人物-组织-关系', '人物-计划-关系', '组织-组织-关系', '组织-计划-关系', '三体时间关系表']
+            let dirName = 'three-body'
+            let dataPromiseList = []
+            fileNames.forEach((name) => {
+                dataPromiseList.push(getSceneData({ dirName: dirName, fileName: name, last: 'json' }))
+            })
+            let res = await Promise.all(dataPromiseList)
+            let data = res.map((item) => {
+                return item.data
+            })
+            return data
+        },
+        createLabelScript: [
+            `CALL db.createVertexLabel('person', 'name' , 'name' ,STRING, false, 'introduce' ,STRING, true)`,
+            `CALL db.createVertexLabel('organization', 'name' , 'name' ,STRING, false, 'introduce' ,STRING, true)`,
+            `CALL db.createVertexLabel('plan', 'name' , 'name' ,STRING, false, 'content' ,STRING, true)`,
+            `CALL db.createVertexLabel('time', 'name' , 'name' ,STRING, false, 'time' ,STRING, true, 'important_events' ,STRING, true)`,
+            `CALL db.createEdgeLabel('person_person','[["person","person"]]', 'relation', STRING, true)`,
+            `CALL db.createEdgeLabel('person_plan','[["person","plan"]]', 'relation', STRING, true)`,
+            `CALL db.createEdgeLabel('person_organization','[["person","organization"]]', 'relation', STRING, true)`,
+            `CALL db.createEdgeLabel('organization_plan','[["organization","plan"]]', 'relation', STRING, true)`,
+            `CALL db.createEdgeLabel('organization_organization','[["organization","organization"]]', 'relation', STRING, true)`,
+            `CALL db.createEdgeLabel('time_time','[["time","time"]]', 'relation', STRING, true)`
         ]
     }
 ]

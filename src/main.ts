@@ -106,6 +106,10 @@ const i18n = new VueI18n({
         zh: { ...zhLang }
     }
 })
+history.pushState(null, null, document.URL)
+window.addEventListener('popstate', () => {
+    history.pushState(null, null, document.URL)
+})
 let intervalTaskId = Vue.prototype.$interval.registTask({
     time: 1,
     fun: async () => {

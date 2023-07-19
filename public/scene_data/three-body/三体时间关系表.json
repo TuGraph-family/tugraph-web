@@ -1,0 +1,6 @@
+{
+    "description": "{\"files\":[{\"format\":\"CSV\",\"label\":\"time_time\",\"columns\":[\"SRC_ID\",\"DST_ID\"],\"header\":0,\"SRC_ID\":\"time\",\"DST_ID\":\"time\"}]}",
+    "data": "魔法时代,人类时代\n人类时代,黄金时代\n黄金时代,危机纪元\n危机纪元,威慑纪元\n威慑纪元,威慑后\n威慑后,广播纪元\n广播纪元,掩体纪元\n掩体纪元,银河纪元\n银河纪元,DX3906星系黑域纪元\nDX3906星系黑域纪元,647号宇宙预备时间线",
+    "continue_on_error": false,
+    "delimiter": ","
+}

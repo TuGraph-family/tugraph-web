@@ -50,6 +50,13 @@ export default class UserLogin extends Vue {
         }
     }
     async userLogin() {
+        if (!this.userName || !this.password) {
+            this.$message({
+                type: 'warning',
+                message: '用户名密码不能为空'
+            })
+            return
+        }
         let result = await this.userLoginStore.userLogin({ userName: this.userName, password: this.password })
         if (result && result.status === 200) {
             let token = result.data.jwt
@@ -65,7 +72,7 @@ export default class UserLogin extends Vue {
         } else {
             this.$message({
                 type: 'error',
-                message: result ? result.data && '登录失败' : '登录失败'
+                message: result ? result.data.error_message : '登录失败'
             })
         }
     }

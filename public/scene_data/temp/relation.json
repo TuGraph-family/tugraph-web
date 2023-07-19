@@ -1,0 +1,6 @@
+{
+    "description": "{\"files\":[{\"format\":\"CSV\",\"label\":\"person_plan\",\"columns\":[\"SRC_ID\",\"DST_ID\",\"relation\"],\"header\":0,\"SRC_ID\":\"person\",\"DST_ID\":\"plan\"}]}",
+    "data": "",
+    "continue_on_error": false,
+    "delimiter": ","
+}

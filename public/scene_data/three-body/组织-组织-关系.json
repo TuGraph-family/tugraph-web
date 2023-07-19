@@ -1,0 +1,6 @@
+{
+    "description": "{\"files\":[{\"format\":\"CSV\",\"label\":\"organization_organization\",\"columns\":[\"SRC_ID\",\"DST_ID\",\"relation\"],\"header\":0,\"SRC_ID\":\"organization\",\"DST_ID\":\"organization\"}]}",
+    "data": "水滴,舰队国际,秒杀\n水滴,太阳系,封锁\n二向箔,太阳系,清理\n终极规律号,自然选择号,攻击\n终极规律号,企业号,攻击\n终极规律号,深空号,攻击\n终极规律号,蓝色空间号,攻击\n蓝色空间号,终极规律号,攻击\n星舰地球,自然选择号,包括\n星舰地球,深空号,包括\n星舰地球,蓝色空间号,包括\n星舰地球,终极规律号,包括\n星舰地球,企业号,包括\n青铜时代号,量子号,攻击\n万有引力号,蓝色空间号,追击、合并\n\n\n\n\n",
+    "continue_on_error": false,
+    "delimiter": ","
+}
