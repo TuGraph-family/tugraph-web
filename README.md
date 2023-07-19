@@ -2,6 +2,8 @@
 
 TuGraph Browser 是 TuGraph 图数据库的可视化工具。使用 TuGraph Browser 可以完成图谱、模型、数据等的创建和导入。同时可用使用 TuGraph Cypher 进行数据的操作。
 
+注意：TuGraph前端后续迭代升级，新仓库为 tugrpah-db-browser，该仓库目前仅维护不升级。
+
 ## 安装项目
 
 ```
