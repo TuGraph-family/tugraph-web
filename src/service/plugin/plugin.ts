@@ -4,7 +4,7 @@ interface options {
     [propName: string]: any
 }
 
-export function loadCppPlugin(params: { graph: string; data: { name: string; description: string; code_base64: string; read_only: boolean } }) {
+export function loadCppPlugin(params: { graph: string; data: { name: string; description: string; code_base64: string[]; file_name: string[]; read_only: boolean } }) {
     let api_url = `/db/${params.graph}/cpp_plugin`
     let options: options = {
         headers: {
@@ -14,7 +14,7 @@ export function loadCppPlugin(params: { graph: string; data: { name: string; des
     return http.post(api_url, params.data, options)
 }
 
-export function loadPythonPlugin(params: { graph: string; data: { name: string; description: string; code_base64: string; read_only: boolean; code_type: string } }) {
+export function loadPythonPlugin(params: { graph: string; data: { name: string; description: string; code_base64: string[]; file_name: string[]; read_only: boolean; code_type: string } }) {
     let api_url = `/db/${params.graph}/python_plugin`
     let options: options = {
         headers: {

@@ -229,9 +229,9 @@ export default class WorkbenchPlugin extends Vue {
             let code_base64 = (e.target.result as string).split(',')[1]
             let res: any = {}
             if (type === 'py') {
-                res = await this.pluginStore.loadPythonPlugin({ graph: this.graphName, data: { name: name, description: description, code_base64: code_base64, read_only: readOnly, code_type: type } })
+                res = await this.pluginStore.loadPythonPlugin({ graph: this.graphName, data: { name: name, description: description, code_base64: [code_base64], file_name: [name + '.py'], read_only: readOnly, code_type: type } })
             } else {
-                res = await this.pluginStore.loadCppPlugin({ graph: this.graphName, data: { name: name, description: description, code_base64: code_base64, read_only: readOnly, code_type: type } })
+                res = await this.pluginStore.loadCppPlugin({ graph: this.graphName, data: { name: name, description: description, code_base64: [code_base64], file_name: [name + '.cpp'], read_only: readOnly, code_type: type } })
             }
             if (res.status === 200) {
                 this.$message({
