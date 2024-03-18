@@ -35,12 +35,12 @@ export default class Plugin extends VuexModule {
         this.tabPluginList = []
     }
     @Action
-    async loadCppPlugin(params: { graph: string; data: { name: string; description: string; code_base64: string; read_only: boolean; code_type: string } }) {
+    async loadCppPlugin(params: { graph: string; data: { name: string; description: string; code_base64: string[]; file_name: string[]; read_only: boolean; code_type: string } }) {
         let res = await loadCppPlugin(params)
         return res
     }
     @Action
-    async loadPythonPlugin(params: { graph: string; data: { name: string; description: string; code_base64: string; read_only: boolean; code_type: string } }) {
+    async loadPythonPlugin(params: { graph: string; data: { name: string; description: string; code_base64: string[]; file_name: string[]; read_only: boolean; code_type: string } }) {
         let res = await loadPythonPlugin(params)
         return res
     }
