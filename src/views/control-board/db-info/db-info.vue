@@ -103,6 +103,7 @@
                             <div>rest_address : {{ item.rest_address }}</div>
                             <div>rpc_address : {{ item.rpc_address }}</div>
                             <div>state : {{ item.state }}</div>
+                            <div>ha_role : {{ item.ha_role }}</div>
                         </div>
                     </div>
                 </div>
