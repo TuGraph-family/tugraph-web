@@ -15,6 +15,7 @@ import TaskList from '@/views/control-board/task-list/task-list.vue'
 import AuditLog from '@/views/control-board/audit-log/audit-log.vue'
 import RoleList from '@/views/control-board/role-list/role-list.vue'
 import Authority from '@/views/control-board/authority/authority.vue'
+import ChangePWD from '@/views/change-pwd/change-pwd.vue'
 // 应用Demo
 import Applications from '../views/plugin-applications/plugin-applications.vue'
 import TravelLine from '../views/plugin-applications/travel-line/travel-line.vue'
@@ -113,6 +114,11 @@ const routes = [
         component: UserLogin
     },
     {
+        path: '/ChangePWD',
+        name: 'ChangePWD',
+        component: ChangePWD
+    },
+    {
         path: '/Applications',
         name: 'Applications',
         component: Applications,
@@ -135,6 +141,10 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     setTimeout(() => {
         const token = localStorage.__FMA_TOKEN__
+        if (to.name === 'ChangePWD') {
+            next()
+            return
+        }
         if (!token && to.name !== 'UserLogin') {
             next({ name: 'UserLogin' })
         } else {

@@ -58,10 +58,15 @@ export default class UserLogin extends Vue {
             return
         }
         let result = await this.userLoginStore.userLogin({ userName: this.userName, password: this.password })
+
         if (result && result.status === 200) {
             let token = result.data.jwt
             let isAdmin = result.data.is_admin
             this.userLoginStore.updateToken({ token, isAdmin })
+            if (result.data.default_password) {
+                this.$router.push({ name: 'ChangePWD' })
+                return
+            }
             this.$router.push({ name: 'Workbench' })
             this.$message({
                 type: 'success',

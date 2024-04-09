@@ -30,9 +30,9 @@
                 <router-view></router-view>
             </article>
         </section>
-        <section v-if="showChagePwd">
+        <!-- <section v-if="showChagePwd">
             <ChangePwd :show.sync="showChagePwd"></ChangePwd>
-        </section>
+        </section> -->
     </div>
 </template>
 <script lang="ts">
@@ -85,7 +85,7 @@ export default class Workbench extends Vue {
     }
     updatePassword() {
         this.showUserLogoutPanel = false
-        this.showChagePwd = true
+        this.$router.push({ name: 'ChangePWD' })
     }
     async logout() {
         this.cypherStore.upDateCypherReasultDatas([])

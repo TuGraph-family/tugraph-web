@@ -3,7 +3,7 @@
         <div class="add-user-dig">
             <div class="add-user-dig-header">
                 <div>修改密码</div>
-                <span class="el-icon-close" @click="cancelAddUser"></span>
+                <!-- <span class="el-icon-close" @click="cancelAddUser"></span> -->
             </div>
             <div class="add-user-dig-name">
                 <div class="add-user-dig-text">请输入原密码</div>
@@ -72,7 +72,7 @@ export default class ChangePwd extends Vue {
         }
     }
     cancelAddUser() {
-        this.$emit('update:show', false)
+        this.$router.push({ name: 'Workbench' })
     }
 }
 </script>
