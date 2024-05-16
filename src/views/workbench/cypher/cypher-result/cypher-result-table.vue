@@ -12,7 +12,11 @@
                 row-class-name="rowClass"
                 cell-class-name="cellClass"
             >
-                <el-table-column :prop="item" :label="item" v-for="item in Object.keys(tableData[0])" :key="item" align="center"> </el-table-column>
+                <el-table-column :prop="item" :label="item" v-for="item in Object.keys(tableData[0])" :key="item">
+                    <template slot-scope="scope">
+                        <pre>{{ tableData[0][item] }}</pre>
+                    </template>
+                </el-table-column>
             </el-table>
         </div>
         <div v-if="hasPagination" class="workbench-cypher-result-table-pagination">
