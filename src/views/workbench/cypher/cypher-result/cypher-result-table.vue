@@ -14,7 +14,7 @@
             >
                 <el-table-column :prop="item" :label="item" v-for="item in Object.keys(tableData[0])" :key="item">
                     <template slot-scope="scope">
-                        <pre>{{ tableData[0][item] }}</pre>
+                        <pre>{{ scope.row[item] }}</pre>
                     </template>
                 </el-table-column>
             </el-table>
